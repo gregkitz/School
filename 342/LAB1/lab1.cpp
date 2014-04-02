@@ -22,7 +22,8 @@ struct StudentType  {               // information of one student
 
 // prototypes go here
 bool sortInput(istream& infile, StudentType students[], int& size);
-void moveData(StudentType students[], int location); 
+void moveData(StudentType students[], int location);
+void moveData(StudentType dataToMove[], int locaiton); 
 //-----------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
@@ -62,11 +63,28 @@ bool sortInput(istream& infile, StudentType students[], int& size){
 	// sorts it using insertion sort 
 for (int i = MAXLENGTH -1; i > 0; i--) { 
 	if (strcmp (temp.last, students[i].last) < 0 ) { 
-			cout << "first if statement hit, new name is less than current name" << endl;  
+			cout << "first if statement hit, new name is less than current name" << endl; 
+		        moveData (students, i); 	
 		}
+	else if (strcmp (temp.last, students[i].last) == 0 && strcmp(temp.first, students[i].first) < 0){ 
+			cout << "second if statement hit, last names are equal and first is less" << endl;  
+
+			}
+	else { 
+		cout << "found right place, breaking loop" << endl; 
+		break; 
+	}
 	} 	
 
 
 return true; 
 	}
+// -----------------------MOVE DATA--------------------------------------------
+// Used in the insertion sort, moves the data towards the front of the array
+void moveData(StudentType dataToMove[], int locaiton) { 
+	for (int i = 0; i < location; i++){
+		dataToMove[i] = dataToMove[i+1]; 
+	}
+
+}
 
