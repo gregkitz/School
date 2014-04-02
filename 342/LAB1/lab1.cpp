@@ -22,6 +22,7 @@ struct StudentType  {               // information of one student
 
 // prototypes go here
 bool sortInput(istream& infile, StudentType students[], int& size);
+void moveData(StudentType students[], int location); 
 //-----------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
@@ -54,7 +55,18 @@ int main()  {
 // ----------------------------------------------------------------------------
 // functions go here
 bool sortInput(istream& infile, StudentType students[], int& size){
-cout << "hello" << endl;
+	StudentType temp; 
+	// reads in data to temp location 
+	infile >> temp.last >> temp.first >> temp.grade; 
+//	cout << temp.last << temp.first << temp.grade; 
+	// sorts it using insertion sort 
+for (int i = MAXLENGTH -1; i > 0; i--) { 
+	if (strcmp (temp.last, students[i].last) < 0 ) { 
+			cout << "first if statement hit, new name is less than current name" << endl;  
+		}
+	} 	
+
+
 return true; 
 	}
 
