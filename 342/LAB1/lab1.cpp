@@ -58,6 +58,7 @@ int main()  {
 bool sortInput(istream& infile, StudentType students[], int& size){
 	StudentType temp; 
 	// reads in data to temp location 
+for(;;){
 	infile >> temp.last >> temp.first >> temp.grade; 
 //	cout << temp.last << temp.first << temp.grade; 
 	// sorts it using insertion sort 
@@ -68,15 +69,16 @@ for (int i = MAXLENGTH -1; i > 0; i--) {
 		}
 	else if (strcmp (temp.last, students[i].last) == 0 && strcmp(temp.first, students[i].first) < 0){ 
 			cout << "second if statement hit, last names are equal and first is less" << endl;  
-
+			moveData (students, i); 
 			}
 	else { 
 		cout << "found right place, breaking loop" << endl; 
 		break; 
 	}
-	} 	
+	} if (infile.eof()) break;
+	  size++; 
 
-
+}
 return true; 
 	}
 // -----------------------MOVE DATA--------------------------------------------
