@@ -23,7 +23,7 @@ struct StudentType  {               // information of one student
 // prototypes go here
 bool sortInput(istream& infile, StudentType students[], int& size);
 void moveData(StudentType students[], int location);
-void moveData(StudentType dataToMove[], int locaiton); 
+void moveData(StudentType dataToMove[], int location); 
 //-----------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
@@ -81,7 +81,7 @@ return true;
 	}
 // -----------------------MOVE DATA--------------------------------------------
 // Used in the insertion sort, moves the data towards the front of the array
-void moveData(StudentType dataToMove[], int locaiton) { 
+void moveData(StudentType dataToMove[], int location) { 
 	for (int i = 0; i < location; i++){
 		dataToMove[i] = dataToMove[i+1]; 
 	}
