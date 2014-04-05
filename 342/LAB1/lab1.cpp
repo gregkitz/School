@@ -33,7 +33,7 @@ int main()  {
    int average = 0;                 // average exam score, truncated
 
    // creates file object and opens the data file
-   ifstream infile("data2.txt");
+   ifstream infile("data1.txt");
    if (!infile)  { 
       cout << "File could not be opened." << endl; 
       return 1;  
@@ -60,36 +60,39 @@ int main()  {
 bool sortInput(istream& infile, StudentType students[], int& size){
 	StudentType temp; 
 	// reads in data to temp location 
-for(;;){
-	infile >> temp.last >> temp.first >> temp.grade; 
+while(true){
 
+	infile >> temp.last >> temp.first >> temp.grade; 
+	if (infile.eof()) break;
 	// sorts it using insertion sort 
 	int savedSpot = 0; 
 	for (int i = size - 1; i >= 0; i--) { 
-	cout << "reentering loop" << endl; 	
-	cout << "temporary last" << temp.last << "current last" << students[i].last << "size is: " << size << endl; 
-	if (strcmp (temp.last, students[i].last) < 0 ) { 
-			cout << "first if statement hit, new name is less than current name" << endl; 
+	 
+	
+	   if (strcmp (temp.last, students[i].last) < 0 ) { 
+
 		      students[i+1] = students [i];  
 		      savedSpot = i; 
-		}
-	else if (strcmp (temp.last, students[i].last) == 0 && strcmp(temp.first, students[i].first) < 0){ 
-			cout << "second if statement hit, last names are equal and first is less" << endl;  
+	   }
+	   else if (strcmp (temp.last, students[i].last) == 0 && strcmp(temp.first, students[i].first) < 0){ 
+
 	 		students[i+1] = students[i]; 
 			savedSpot = i; 	
-			}
-	else { 
-		cout << "found right place, breaking loop" << endl;
+	   } else { 
+
 	       savedSpot = i+1; 	
 		break; 
-		}
+	   }
+	
 	}
+	cout << "inserting: " << temp.last << "size is: " << size << endl; 
 	students[savedSpot] = temp; 
 	size++; 
-	if (infile.eof()) break;
+
 
 
 }
+
 return true; 
 	}
 // -----------------------MOVE DATA--------------------------------------------
