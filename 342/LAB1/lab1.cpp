@@ -23,16 +23,17 @@ struct StudentType  {               // information of one student
 // prototypes go here
 bool sortInput(istream& infile, StudentType students[], int& size);
 void moveData(StudentType students[], int location);
-void moveData(StudentType dataToMove[], int location); 
+void moveData(StudentType dataToMove[], int location);
+void printStudentReport (StudentType dataToPrint[], const int& size); 
 //-----------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
-   int size = 1;                    // total number of students
+   int size = 0;                    // total number of students
    int histogram[HISTOGRAMSIZE];    // grades grouped by GROUP
    int average = 0;                 // average exam score, truncated
 
    // creates file object and opens the data file
-   ifstream infile("data1.txt");
+   ifstream infile("data2.txt");
    if (!infile)  { 
       cout << "File could not be opened." << endl; 
       return 1;  
@@ -40,7 +41,8 @@ int main()  {
 
    // read and sort input by last then first name
    bool successfulRead = sortInput(infile, students, size); 
-   cout << "Successfully Read?" << successfulRead << endl;    
+   cout << "Successfully Read?" << successfulRead << endl;  
+   printStudentReport(students, size);   
 
    // display list, histogram, and class average 
   // if (successfulRead)  {
@@ -60,23 +62,32 @@ bool sortInput(istream& infile, StudentType students[], int& size){
 	// reads in data to temp location 
 for(;;){
 	infile >> temp.last >> temp.first >> temp.grade; 
-//	cout << temp.last << temp.first << temp.grade; 
+
 	// sorts it using insertion sort 
-for (int i = MAXLENGTH -1; i > 0; i--) { 
+	int savedSpot = 0; 
+	for (int i = size - 1; i >= 0; i--) { 
+	cout << "reentering loop" << endl; 	
+	cout << "temporary last" << temp.last << "current last" << students[i].last << "size is: " << size << endl; 
 	if (strcmp (temp.last, students[i].last) < 0 ) { 
 			cout << "first if statement hit, new name is less than current name" << endl; 
-		        moveData (students, i); 	
+		      students[i+1] = students [i];  
+		      savedSpot = i; 
 		}
 	else if (strcmp (temp.last, students[i].last) == 0 && strcmp(temp.first, students[i].first) < 0){ 
 			cout << "second if statement hit, last names are equal and first is less" << endl;  
-			moveData (students, i); 
+	 		students[i+1] = students[i]; 
+			savedSpot = i; 	
 			}
 	else { 
-		cout << "found right place, breaking loop" << endl; 
+		cout << "found right place, breaking loop" << endl;
+	       savedSpot = i+1; 	
 		break; 
+		}
 	}
-	} if (infile.eof()) break;
-	  size++; 
+	students[savedSpot] = temp; 
+	size++; 
+	if (infile.eof()) break;
+
 
 }
 return true; 
@@ -89,4 +100,11 @@ void moveData(StudentType dataToMove[], int location) {
 	}
 
 }
+void printStudentReport (StudentType dataToPrint[], const int& size) { 
+	for (int i = 0; i < size; i++)	{
+	cout <<	"last name: " << dataToPrint[i].last << dataToPrint[i].first << dataToPrint[i].grade << endl; 
+
+      }		
+
+   }
 
