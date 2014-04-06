@@ -24,7 +24,9 @@ struct StudentType  {               // information of one student
 bool sortInput(istream& infile, StudentType students[], int& size);
 void moveData(StudentType students[], int location);
 void moveData(StudentType dataToMove[], int location);
-void printStudentReport (StudentType dataToPrint[], const int& size); 
+void printStudentReport (StudentType dataToPrint[], const int& size);
+void setHistogram (StudentType dataToSet[], int* histogram, const int& size);
+void displayHistogram (int * histogram);
 //-----------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
@@ -44,11 +46,11 @@ int main()  {
    cout << "Successfully Read?" << successfulRead << endl;  
    printStudentReport(students, size);   
 
-   // display list, histogram, and class average 
+   // display lists, histogram, and class average 
   // if (successfulRead)  {
   //    displayList(const StudentType students[], int size);
-  //    setHistogram(... you figure parameters ...);
-  //    displayHistogram(... you figure parameters ...);
+     setHistogram(students, histogram, size);
+     displayHistogram(histogram);
   //    average = findAverage(... you figure parameters ...);
   //    cout << "Average grade: " << average << endl << endl;
   // }
@@ -111,3 +113,27 @@ void printStudentReport (StudentType dataToPrint[], const int& size) {
 
    }
 
+void setHistogram (StudentType dataToSet[], int* histogram, const int& size) {	for (int gradeIndex = 0; gradeIndex < size; gradeIndex++){
+		int currentGrade = dataToSet[gradeIndex].grade; cout << currentGrade << "<-- current grade" << endl;  
+		currentGrade = currentGrade / 10; 
+		histogram[currentGrade]++; 
+		}
+
+	for (int i = 0; i < 11; i++){
+		cout << histogram[i] << " "; 	
+		}
+
+	}
+void displayHistogram (int * histogram){
+       int lowerbound = 0, upperbound = 9; 	
+cout << "Histogram grades: " << endl; 
+	for (int i = 0; i < 11; i++) { 
+cout << setw(9) << lowerbound << "-->  " << upperbound << ":"; 
+	for (int g = histogram[i]; g > 0; g--) { 
+		cout <<	"*"; 
+			} cout << endl; 
+	lowerbound += 10; 
+	upperbound != 99 ? upperbound += 10 : upperbound += 1; 
+		}	
+
+	}
