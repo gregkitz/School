@@ -1,5 +1,24 @@
-// ----------------------------------------------------------------------------
-// You write meaningful overview comments and assumptions here
+// -------------------------------------------------------------------------------------------------------
+// CSS 342, Spring 2014
+// Lab 1
+// Greg Kitzmiller
+//--------------------------------------------------------------------------------------------------------
+// Sorts student data by last name and, if last names are equivalent, by first name.
+// Display a list of students using an insertion sort to standard output.
+// Data includes last name, first name, and grade. For example: 
+//
+// duck donald 90
+// mouse mickey 50
+// witch wicked 78
+//
+// Display a histogram of grade data to standard output. 
+//
+// Assumptions: 
+// 	- data in text file formatted correctly. 
+// 	- Names are less than MAXLENGTH. 
+// 	- There are less than 100 grade records. 
+// 	- Grades are integers. 
+//--------------------------------------------------------------------------------------------------------
 
 #include <string.h>
 #include <iostream>
@@ -20,15 +39,14 @@ struct StudentType  {               // information of one student
    char first[MAXLENGTH];           // first name (MAXLENGTH-1 at most)
 };
 
-// prototypes go here
-bool sortInput(istream& infile, StudentType students[], int& size);
-void moveData(StudentType students[], int location);
-void moveData(StudentType dataToMove[], int location);
-void displayList (StudentType dataToPrint[], const int& size);
-void setHistogram (StudentType dataToSet[], int* histogram, const int& size);
-void displayHistogram (int * histogram);
-int findAverage(StudentType gradeBook[], int& size);
-//-----------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------- 
+//Prototypes
+bool sortInput(istream& infile, StudentType students[], int& size); // reads in and sorts the input using an insertion sort by last name/first name
+void displayList (StudentType dataToPrint[], const int& size); // Displays student data
+void setHistogram (StudentType dataToSet[], int* histogram, const int& size); // Takes grades from student data and builds an array for a histogram
+void displayHistogram (int * histogram); // Displays grade info as a histogram
+int findAverage(StudentType gradeBook[], int& size); // Calculates the average grade
+//--------------------------------------------------------------------------------------------------------
 int main()  {
    StudentType students[MAXSIZE];   // list of MAXSIZE number of students
    int size = 0;                    // total number of students
@@ -58,7 +76,7 @@ int main()  {
    return 0;
 }
 
-// ----------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------
 // sortInput
 // Sorts array (second parameter) into ascending order by last name, then first name
 // first parameter is a reference to the stream object where student data is read in to be sorted
