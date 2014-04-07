@@ -54,7 +54,7 @@ int main()  {
    int average = 0;                 // average exam score, truncated
 
    // creates file object and opens the data file
-   ifstream infile("data2.txt");
+   ifstream infile("data1.txt");
    if (!infile)  { 
       cout << "File could not be opened." << endl; 
       return 1;  
