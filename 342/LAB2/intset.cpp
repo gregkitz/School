@@ -2,24 +2,32 @@
 // default constructor
 IntSet::IntSet(){
 	set = new bool[1]; 
+	initializeSet();
+	setSize = 1; 
 
 }
 // one parameter constructor
 IntSet::IntSet(int a){
-	set = new bool[findLarestParam(a, 0, 0, 0, 0) + 1];
+	setSize = findLarestParam(a, 0, 0, 0, 0) + 1;
+	set = new bool[setSize];
+	initializeSet();
 	insert(a);
 
 }
 // two parameter constructor
 IntSet::IntSet(int a, int b){
-	set = new bool[findLarestParam(a, b, 0, 0, 0) + 1];
+	setSize = findLarestParam(a, b, 0, 0, 0) + 1;
+	set = new bool[setSize];
+	initializeSet();
 	insert(a);
 	insert(b);
 
 }
 // three parameter constructor
 IntSet::IntSet(int a, int b, int c){
-	set = new bool[findLarestParam(a, b, c, 0, 0) + 1];
+	setSize = findLarestParam(a, b, 0, 0, 0) + 1;
+	set = new bool[setSize];
+	initializeSet();
 	insert(a);
 	insert(b);
 	insert(c);
@@ -27,7 +35,9 @@ IntSet::IntSet(int a, int b, int c){
 }
 // four parameter constructor
 IntSet::IntSet(int a, int b, int c, int d){
-	set = new bool[findLarestParam(a, b, c, d, 0) + 1];
+	setSize = findLarestParam(a, b, c, d, 0) + 1;
+	set = new bool[setSize];
+	initializeSet(); 
 	insert(a);
 	insert(b);
 	insert(c);
@@ -36,15 +46,57 @@ IntSet::IntSet(int a, int b, int c, int d){
 }
 // five parameter constructor
 IntSet::IntSet(int a, int b, int c, int d, int e){
-	int largestParam = findLarestParam(a, b, c, d, e);
-	cout << "Largest param is: " << largestParam << endl;
-	set = new bool[findLarestParam(a, b, c, d, e) + 1]; 
+	setSize = findLarestParam(a, b, c, d, e) + 1; 
+	set = new bool[setSize]; 
+	initializeSet(); 
 	insert(a);
 	insert(b);
 	insert(c);
 	insert(d);
 	insert(e);
+	printSet(); 
 }
+
+// Arithmatic operators
+IntSet IntSet::operator+(const IntSet& rhs) const{
+	int newSize = rhs.setSize > setSize ? rhs.setSize : setSize;
+	IntSet unioned(newSize - 1);
+
+	for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){
+		if (rhs.set[currentNum] == 1){
+			unioned.insert(currentNum);
+		}
+
+	}
+	for (int currentNum = 0; currentNum < setSize; currentNum++){
+		if (set[currentNum] == 1){
+			unioned.insert(currentNum);
+
+		}
+
+	}
+
+	return unioned;
+}
+
+// Assignment operators
+
+IntSet IntSet::operator=(const IntSet& rhs){
+	IntSet assignmentSet(rhs.setSize - 1);
+	for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){
+		if (rhs.set[currentNum] == 1){
+			assignmentSet.insert(currentNum);
+
+		}
+
+	}
+
+	delete this;
+	*this = assignmentSet;
+	return *this; 
+
+}
+
 
 int IntSet::findLarestParam(int a, int b, int c, int d, int e){
 	int largest = a > b ? a : b; 
@@ -63,6 +115,23 @@ bool IntSet::insert(int toInsert){
 	else {
 		set[toInsert] = true; 
 		return true;
+
+	}
+}
+
+void IntSet::printSet(){
+	for (int toPrint = 0; toPrint < setSize; toPrint++){
+		if (set[toPrint] != false){
+			cout << "To print: " << toPrint << "Boolean value: " << set[toPrint] << endl; 
+		}
+
+	}
+
+}
+
+void IntSet::initializeSet(){
+	for (int toInit = 0; toInit < setSize; toInit++){
+		set[toInit] = 0; 
 
 	}
 }

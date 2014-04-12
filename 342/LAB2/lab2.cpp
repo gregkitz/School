@@ -10,7 +10,12 @@ using namespace std;
 
 int main() {
 
-	IntSet A(9, 2, 1, -2, 100);
+	IntSet A(1, 5, 7, 3);
+	IntSet B(9); 
+	
+
+	IntSet C = A + B;
+	C.printSet(); 
   /* IntSet A(9), B(15,3), C(10,5,8), D(12,5,10,12,-500), E, X(D), Y;
 
    // sets A and B acquire desired values

@@ -37,9 +37,14 @@ public:
 // Methods
 	bool insert(int toInsert);
 	int findLarestParam(int a, int b, int c, int d, int e); // finds and returns the largest parameter passed
+	void printSet(); 
+	void initializeSet(); 
+
+
 
 private: 
 	bool * set; 
+	int setSize; 
 	
 
 
