@@ -13,7 +13,11 @@ class IntSet {
 public: 
 // default constructor 
 	IntSet();
-// overloaded constructor
+// overloaded constructors
+	IntSet(int a);
+	IntSet(int a, int b);
+	IntSet(int a, int b, int c);
+	IntSet(int a, int b, int c, int d);
 	IntSet(int a, int b, int c, int d, int e);
 // arithmetic operators
 	IntSet operator+(const IntSet&) const; //union two sets

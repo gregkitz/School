@@ -9,7 +9,9 @@
 using namespace std;
 
 int main() {
-   IntSet A(9), B(15,3), C(10,5,8), D(12,5,10,12,-500), E, X(D), Y;
+
+	IntSet A(9, 2, 1, -2, 100);
+  /* IntSet A(9), B(15,3), C(10,5,8), D(12,5,10,12,-500), E, X(D), Y;
 
    // sets A and B acquire desired values
    // A = { 3 7 9}
@@ -60,7 +62,7 @@ int main() {
    success = D.remove(-5000);            // handle value out of range
    success = D.insert(0);                // put 0 in the set
    success = D.insert(20000);            // handle as you'd like, resize or not
-
+   */
    return 0;
 }
 
