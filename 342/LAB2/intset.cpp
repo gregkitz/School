@@ -54,7 +54,69 @@ IntSet::IntSet(int a, int b, int c, int d, int e){
 	insert(c);
 	insert(d);
 	insert(e);
-	printSet(); 
+}
+
+// Copy Constructor 
+IntSet::IntSet(const IntSet& rhs){
+	//cout << "IN COPY CONSTRUCTOR!!!" << *this << endl;
+	setSize = rhs.setSize;
+	set = new bool[setSize];
+
+	for (int currentNum = 0; currentNum < setSize; currentNum++){
+		if (rhs.set[currentNum] == 1){
+			insert(currentNum);
+		}
+
+	}
+
+}
+// Destructor 
+
+IntSet::~IntSet(){
+	delete [] set; 
+	set = NULL;
+
+}
+
+// Insertion/Extraction operators
+
+ostream& operator<<(ostream &output, const IntSet & rhs){
+	output << "{";
+	if (rhs.setSize == 1){
+		output << " ";
+	}
+	else{
+		for (int toPrint = 0; toPrint < rhs.setSize; toPrint++){
+			if (rhs.set[toPrint] != false){
+				output << " " << toPrint;
+			}
+
+		}
+		output << " }";
+	}
+	return output;
+}
+
+// insertion
+
+istream& operator>>(istream &input, IntSet & rhs){
+	cout << "Terminate with '-1' " << endl; 
+	while (true){
+		int x;
+		input >> x;
+		if (x == -1){
+			break;
+		}
+		else if (x < 0){
+			// do nothing
+		}
+		else{
+
+			rhs.insert(x);
+		}
+
+	}
+	return input;
 }
 
 // Arithmatic operators
@@ -79,25 +141,38 @@ IntSet IntSet::operator+(const IntSet& rhs) const{
 	return unioned;
 }
 
+// += operator
+
+IntSet& IntSet::operator+=(const IntSet& rhs){
+	
+	*this = *this + rhs; 
+	return *this;
+
+}
+
 // Assignment operators
 
-IntSet IntSet::operator=(const IntSet& rhs){
-	IntSet assignmentSet(rhs.setSize - 1);
+IntSet& IntSet::operator=(const IntSet& rhs){
+	delete[] set; 
+	setSize = rhs.setSize;
+	set = new bool[setSize];
+	
+	initializeSet();
+
 	for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){
 		if (rhs.set[currentNum] == 1){
-			assignmentSet.insert(currentNum);
+			insert(currentNum);
 
 		}
 
 	}
 
-	delete this;
-	*this = assignmentSet;
+	
 	return *this; 
 
 }
 
-
+// Misc Methods
 int IntSet::findLarestParam(int a, int b, int c, int d, int e){
 	int largest = a > b ? a : b; 
 	largest = largest > c ? largest : c; 
@@ -113,6 +188,11 @@ bool IntSet::insert(int toInsert){
 		return false;
 	}
 	else {
+		if (toInsert > setSize){
+			IntSet newSet(toInsert);
+			*this += newSet;
+
+		}
 		set[toInsert] = true; 
 		return true;
 
@@ -122,7 +202,7 @@ bool IntSet::insert(int toInsert){
 void IntSet::printSet(){
 	for (int toPrint = 0; toPrint < setSize; toPrint++){
 		if (set[toPrint] != false){
-			cout << "To print: " << toPrint << "Boolean value: " << set[toPrint] << endl; 
+			cout << " " << toPrint;
 		}
 
 	}
@@ -136,3 +216,21 @@ void IntSet::initializeSet(){
 	}
 }
 
+bool IntSet::isEmpty(){
+	
+
+	return setSize > 1 ? false : true; 
+}
+
+bool IntSet::isInSet(int toCheck){
+	if (toCheck > setSize){
+		return false;
+	}
+	else if (set[toCheck] == true){
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}

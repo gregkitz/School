@@ -19,14 +19,20 @@ public:
 	IntSet(int a, int b, int c);
 	IntSet(int a, int b, int c, int d);
 	IntSet(int a, int b, int c, int d, int e);
+
+// copy constructor 
+	IntSet(const IntSet&);
+
+// destructor 
+	~IntSet(); 
 // arithmetic operators
 	IntSet operator+(const IntSet&) const; //union two sets
 	IntSet operator-(const IntSet&) const; //difference two sets
 	IntSet operator*(const IntSet&) const; //intersect
 
 // assignment operators
-	IntSet operator=(const IntSet&); // assignment operator
-	IntSet operator+=(const IntSet&); //union assignment 
+	IntSet& operator=(const IntSet&); // assignment operator
+	IntSet& operator+=(const IntSet&); //union assignment 
 	IntSet operator-=(const IntSet&); //differnce assignment
 	IntSet operator*=(const IntSet&); //intersect assignment
 
@@ -39,6 +45,8 @@ public:
 	int findLarestParam(int a, int b, int c, int d, int e); // finds and returns the largest parameter passed
 	void printSet(); 
 	void initializeSet(); 
+	bool isEmpty(); 
+	bool isInSet(int toCheck);
 
 
 
