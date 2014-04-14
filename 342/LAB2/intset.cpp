@@ -25,7 +25,7 @@ IntSet::IntSet(int a, int b){
 }
 // three parameter constructor
 IntSet::IntSet(int a, int b, int c){
-	setSize = findLarestParam(a, b, 0, 0, 0) + 1;
+	setSize = findLarestParam(a, b, c, 0, 0) + 1;
 	set = new bool[setSize];
 	initializeSet();
 	insert(a);
@@ -61,6 +61,7 @@ IntSet::IntSet(const IntSet& rhs){
 	//cout << "IN COPY CONSTRUCTOR!!!" << *this << endl;
 	setSize = rhs.setSize;
 	set = new bool[setSize];
+	initializeSet();
 
 	for (int currentNum = 0; currentNum < setSize; currentNum++){
 		if (rhs.set[currentNum] == 1){
@@ -82,8 +83,8 @@ IntSet::~IntSet(){
 
 ostream& operator<<(ostream &output, const IntSet & rhs){
 	output << "{";
-	if (rhs.setSize == 1){
-		output << " ";
+	if (rhs.setSize <= 1){
+		output << " }";
 	}
 	else{
 		for (int toPrint = 0; toPrint < rhs.setSize; toPrint++){
@@ -140,38 +141,126 @@ IntSet IntSet::operator+(const IntSet& rhs) const{
 
 	return unioned;
 }
-
-// += operator
-
-IntSet& IntSet::operator+=(const IntSet& rhs){
+// difference
+IntSet IntSet::operator-(const IntSet& rhs) const {
+	IntSet difference(setSize );
+	difference.initializeSet();
 	
-	*this = *this + rhs; 
-	return *this;
+	if (setSize > rhs.setSize){
+		for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){ // Compares values between two sets
+			if (set[currentNum] == true && rhs.set[currentNum] == false){
+				difference.insert(currentNum);
+			}
+			
+		}
+		for (int currentNum = rhs.setSize; currentNum < setSize; currentNum++){
+			if (set[currentNum] == true){
+				difference.insert(currentNum);
+			}// Adds the rest of the values 
 
-}
+		}
+	}
 
-// Assignment operators
-
-IntSet& IntSet::operator=(const IntSet& rhs){
-	delete[] set; 
-	setSize = rhs.setSize;
-	set = new bool[setSize];
 	
-	initializeSet();
-
-	for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){
-		if (rhs.set[currentNum] == 1){
-			insert(currentNum);
+	else{
+		for (int currentNum = 0; currentNum < setSize; currentNum++){ // Just compare the values
+			if (set[currentNum] == true && rhs.set[currentNum] == false){
+				difference.insert(currentNum);
+			}
 
 		}
 
 	}
+	return difference;
 
-	
+}
+// intersection
+IntSet IntSet::operator*(const IntSet& rhs) const {
+	int smallerSize = setSize > rhs.setSize ? rhs.setSize : setSize;
+	IntSet intersect(smallerSize -1);
+	intersect.initializeSet();
+
+	for (int currentNum = 0; currentNum < smallerSize; currentNum++){
+		if (set[currentNum] == rhs.set[currentNum]  && set[currentNum] != 0){
+			intersect.insert(currentNum);
+		}
+	}
+	return intersect;
+
+}
+
+
+
+// Assignment operators
+
+IntSet& IntSet::operator=(const IntSet& rhs){
+	if (&rhs != this){
+		delete[] set;
+		setSize = rhs.setSize;
+		set = new bool[setSize];
+
+		initializeSet();
+
+		for (int currentNum = 0; currentNum < rhs.setSize; currentNum++){
+			if (rhs.set[currentNum] == 1){
+				insert(currentNum);
+
+			}
+
+		}
+
+	}
 	return *this; 
 
 }
 
+//Intersection Assignment
+IntSet IntSet::operator*=(const IntSet& rhs){
+	*this = *this * rhs; 
+	return *this; 
+}
+
+//Difference Assignmnet
+IntSet IntSet::operator-=(const IntSet& rhs){
+	*this = *this - rhs; 
+
+	return *this; 
+}
+
+// Union Assignment
+
+IntSet& IntSet::operator+=(const IntSet& rhs){
+
+	*this = *this + rhs;
+	return *this;
+
+}
+//Boolean Operators 
+
+bool IntSet::operator==(const IntSet& rhs) const{
+	bool isEqual = true; 
+	if (setSize == rhs.setSize){
+		for (int currentNum = 0; currentNum < setSize; currentNum++){
+			if (set[currentNum] != rhs.set[currentNum]){
+				return false;
+
+			}
+			else{
+				isEqual = true; 
+			}
+		}
+
+	}
+	else {
+		return false; 
+	}
+	return isEqual;
+}
+
+bool IntSet::operator!=(const IntSet& rhs) const{
+	bool isEqual = *this == rhs;
+	return !isEqual;
+}
 // Misc Methods
 int IntSet::findLarestParam(int a, int b, int c, int d, int e){
 	int largest = a > b ? a : b; 
@@ -197,6 +286,22 @@ bool IntSet::insert(int toInsert){
 		return true;
 
 	}
+}
+
+// remove
+
+bool IntSet::remove(int toRemove){
+	if (toRemove < 0){
+		return false;
+	}
+	else if(toRemove > setSize){
+		return false;
+	}
+	else {
+		set[toRemove] = false; 
+		return true; 
+	}
+
 }
 
 void IntSet::printSet(){

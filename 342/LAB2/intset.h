@@ -37,11 +37,12 @@ public:
 	IntSet operator*=(const IntSet&); //intersect assignment
 
 // boolean operators
-	IntSet operator==(const IntSet&) const; 
-	IntSet operator!=(const IntSet&) const; 
-
+	bool operator==(const IntSet&) const; 
+	bool operator!=(const IntSet&) const; 
+	
 // Methods
 	bool insert(int toInsert);
+	bool remove(int toRemove);
 	int findLarestParam(int a, int b, int c, int d, int e); // finds and returns the largest parameter passed
 	void printSet(); 
 	void initializeSet(); 
