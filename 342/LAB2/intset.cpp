@@ -2,8 +2,9 @@
 // default constructor
 IntSet::IntSet(){
 	set = new bool[1]; 
+	setSize = 1;
 	initializeSet();
-	setSize = 1; 
+	
 
 }
 // one parameter constructor
@@ -58,7 +59,6 @@ IntSet::IntSet(int a, int b, int c, int d, int e){
 
 // Copy Constructor 
 IntSet::IntSet(const IntSet& rhs){
-	//cout << "IN COPY CONSTRUCTOR!!!" << *this << endl;
 	setSize = rhs.setSize;
 	set = new bool[setSize];
 	initializeSet();
@@ -329,6 +329,9 @@ bool IntSet::isEmpty(){
 
 bool IntSet::isInSet(int toCheck){
 	if (toCheck > setSize){
+		return false;
+	}
+	else if (toCheck < 0){
 		return false;
 	}
 	else if (set[toCheck] == true){
