@@ -1,5 +1,6 @@
 #include "intset.h";
 // default constructor
+//-----------------------------------------------------------------------------
 IntSet::IntSet(){
 	set = new bool[1]; 
 	setSize = 1;
@@ -8,6 +9,7 @@ IntSet::IntSet(){
 
 }
 // one parameter constructor
+//-----------------------------------------------------------------------------
 IntSet::IntSet(int a){
 	setSize = findLarestParam(a, 0, 0, 0, 0) + 1;
 	set = new bool[setSize];
@@ -16,6 +18,7 @@ IntSet::IntSet(int a){
 
 }
 // two parameter constructor
+//-----------------------------------------------------------------------------
 IntSet::IntSet(int a, int b){
 	setSize = findLarestParam(a, b, 0, 0, 0) + 1;
 	set = new bool[setSize];
@@ -25,6 +28,7 @@ IntSet::IntSet(int a, int b){
 
 }
 // three parameter constructor
+//-----------------------------------------------------------------------------
 IntSet::IntSet(int a, int b, int c){
 	setSize = findLarestParam(a, b, c, 0, 0) + 1;
 	set = new bool[setSize];
@@ -34,6 +38,7 @@ IntSet::IntSet(int a, int b, int c){
 	insert(c);
 
 }
+//-----------------------------------------------------------------------------
 // four parameter constructor
 IntSet::IntSet(int a, int b, int c, int d){
 	setSize = findLarestParam(a, b, c, d, 0) + 1;
@@ -45,6 +50,7 @@ IntSet::IntSet(int a, int b, int c, int d){
 	insert(d);
 
 }
+//-----------------------------------------------------------------------------
 // five parameter constructor
 IntSet::IntSet(int a, int b, int c, int d, int e){
 	setSize = findLarestParam(a, b, c, d, e) + 1; 
@@ -56,7 +62,7 @@ IntSet::IntSet(int a, int b, int c, int d, int e){
 	insert(d);
 	insert(e);
 }
-
+//-----------------------------------------------------------------------------
 // Copy Constructor 
 IntSet::IntSet(const IntSet& rhs){
 	setSize = rhs.setSize;
@@ -71,6 +77,7 @@ IntSet::IntSet(const IntSet& rhs){
 	}
 
 }
+//-----------------------------------------------------------------------------
 // Destructor 
 
 IntSet::~IntSet(){
@@ -78,7 +85,7 @@ IntSet::~IntSet(){
 	set = NULL;
 
 }
-
+//-----------------------------------------------------------------------------
 // Insertion/Extraction operators
 
 ostream& operator<<(ostream &output, const IntSet & rhs){
@@ -97,7 +104,7 @@ ostream& operator<<(ostream &output, const IntSet & rhs){
 	}
 	return output;
 }
-
+//-----------------------------------------------------------------------------
 // insertion
 
 istream& operator>>(istream &input, IntSet & rhs){
@@ -119,7 +126,7 @@ istream& operator>>(istream &input, IntSet & rhs){
 	}
 	return input;
 }
-
+//-----------------------------------------------------------------------------
 // Arithmatic operators
 IntSet IntSet::operator+(const IntSet& rhs) const{
 	int newSize = rhs.setSize > setSize ? rhs.setSize : setSize;
@@ -141,6 +148,7 @@ IntSet IntSet::operator+(const IntSet& rhs) const{
 
 	return unioned;
 }
+//-----------------------------------------------------------------------------
 // difference
 IntSet IntSet::operator-(const IntSet& rhs) const {
 	IntSet difference(setSize );
@@ -174,6 +182,7 @@ IntSet IntSet::operator-(const IntSet& rhs) const {
 	return difference;
 
 }
+//-----------------------------------------------------------------------------
 // intersection
 IntSet IntSet::operator*(const IntSet& rhs) const {
 	int smallerSize = setSize > rhs.setSize ? rhs.setSize : setSize;
@@ -190,7 +199,7 @@ IntSet IntSet::operator*(const IntSet& rhs) const {
 }
 
 
-
+//-----------------------------------------------------------------------------
 // Assignment operators
 
 IntSet& IntSet::operator=(const IntSet& rhs){
@@ -213,20 +222,20 @@ IntSet& IntSet::operator=(const IntSet& rhs){
 	return *this; 
 
 }
-
+//-----------------------------------------------------------------------------
 //Intersection Assignment
 IntSet IntSet::operator*=(const IntSet& rhs){
 	*this = *this * rhs; 
 	return *this; 
 }
-
+//-----------------------------------------------------------------------------
 //Difference Assignmnet
 IntSet IntSet::operator-=(const IntSet& rhs){
 	*this = *this - rhs; 
 
 	return *this; 
 }
-
+//-----------------------------------------------------------------------------
 // Union Assignment
 
 IntSet& IntSet::operator+=(const IntSet& rhs){
@@ -235,6 +244,7 @@ IntSet& IntSet::operator+=(const IntSet& rhs){
 	return *this;
 
 }
+//-----------------------------------------------------------------------------
 //Boolean Operators 
 
 bool IntSet::operator==(const IntSet& rhs) const{
@@ -261,6 +271,7 @@ bool IntSet::operator!=(const IntSet& rhs) const{
 	bool isEqual = *this == rhs;
 	return !isEqual;
 }
+//-----------------------------------------------------------------------------
 // Misc Methods
 int IntSet::findLarestParam(int a, int b, int c, int d, int e){
 	int largest = a > b ? a : b; 
@@ -271,7 +282,8 @@ int IntSet::findLarestParam(int a, int b, int c, int d, int e){
 
 	return largest; 
 }
-
+//-----------------------------------------------------------------------------
+// Insert
 bool IntSet::insert(int toInsert){
 	if (toInsert < 0){
 		return false;
@@ -287,7 +299,7 @@ bool IntSet::insert(int toInsert){
 
 	}
 }
-
+//-----------------------------------------------------------------------------
 // remove
 
 bool IntSet::remove(int toRemove){
@@ -303,7 +315,7 @@ bool IntSet::remove(int toRemove){
 	}
 
 }
-
+//-----------------------------------------------------------------------------
 void IntSet::printSet(){
 	for (int toPrint = 0; toPrint < setSize; toPrint++){
 		if (set[toPrint] != false){
@@ -313,20 +325,20 @@ void IntSet::printSet(){
 	}
 
 }
-
+//-----------------------------------------------------------------------------
 void IntSet::initializeSet(){
 	for (int toInit = 0; toInit < setSize; toInit++){
 		set[toInit] = 0; 
 
 	}
 }
-
+//-----------------------------------------------------------------------------
 bool IntSet::isEmpty(){
 	
 
 	return setSize > 1 ? false : true; 
 }
-
+//-----------------------------------------------------------------------------
 bool IntSet::isInSet(int toCheck){
 	if (toCheck > setSize){
 		return false;
