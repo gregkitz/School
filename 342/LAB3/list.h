@@ -1,194 +1,126 @@
-/////////////////////////  listtemplate.h file  //////////////////////////////
-// Simple linked list, uses Node as linked list node
-
-#ifndef LIST_H
-#define LIST_H
-
 #include <iostream>
-#include <fstream>
 using namespace std;
 
-//--------------------------  class List  ------------------------------------
-// ADT List: finite, ordered collection of zero or more items.
-//           The ordering is determined by operator< of T class.
-//          
-// Assumptions:  
-//   -- Control of <, printing, etc. of T information is in the T class.  
-//   -- There is no dummy head node, head points to first node.  
-//      If the list is empty, head is NULL.
-//   -- The insert allocates memory for a Node, ptr to the data is passed in.
-//      Allocating memory and setting data is the responsibility of the caller.
-//
-// Note this definition is not a complete class and is not fully documented.
-//----------------------------------------------------------------------------
+#include "list.h"
+#include "nodedata.h"
+#include "employee.h"
 
-template <typename T>
-class List {
+//---------------------- testCopyConstructor --------------------------------
+// Not a member function, pass by value forces a copy to be made.
+// After makeEmpty, the pass by reference list will be empty, while 
+// the pass by value list will be the original list as in main.
+// Also tests destructor behind the scenes.
+//---------------------------------------------------------------------------
 
-   // output operator for class List, print data, 
-   // responsibility for output is left to object stored in the list
-   friend ostream& operator<<(ostream& output, const List<T>& thelist) {
-      Node* current = thelist.head;
-      while (current != NULL) { 
-		  
-		  output << *current->data;
-         current = current->next;
-      }
-	  
-      return output;
+template <typename Object>
+void testCopyConstructor(List<Object>& byRefList, List<Object> byValList) {
+	cout << "Test Copy Constructor and Destructor" << endl;
+	cout << "------------------------------------" << endl;
+	byRefList.makeEmpty();
+	cout << "after emptying, byRefList is: " << endl << byRefList << endl;
+	cout << "byValList is: " << endl << byValList << endl;
 }
 
-public:
-   List();                               // default constructor
-   ~List();                           // destructor
-    List(const List&);                 // copy constructor
-   bool insert(T*);                      // insert one Node into list
-   bool isEmpty() const;                 // is list empty?
-   void buildList(ifstream&);            // build a list from datafile
-   void makeEmpty(); 
+int main() {
+	// list of NodeData, to be sorted by numerical value, then char
+	List<NodeData> mylist, mylist2, mylist3;
+	NodeData* p = new NodeData(20, 'n');  mylist.insert(p);
+	p = new NodeData(10, 'f');  mylist.insert(p);
+	p = new NodeData(16, 'u');  mylist.insert(p);
+	p = new NodeData(25, '!');  mylist.insert(p);
 
-   // needs many more member functions to become a complete ADT
+	p = new NodeData(16, 'u');  mylist2.insert(p);
+	p = new NodeData(15, 't');  mylist2.insert(p);
+	p = new NodeData(19, 'f');  mylist2.insert(p);
+	p = new NodeData(14, 's');  mylist2.insert(p);
+	p = new NodeData(25, '!');  mylist2.insert(p);
+	p = new NodeData(18, 'f');  mylist2.insert(p);
+	cout << "mylist:" << endl << mylist << endl;
+	cout << "mylist2:" << endl << mylist2 << endl;
 
-private:
-   struct Node {            // the node in a linked list
-      T* data;              // pointer to actual data, operations in T
-      Node* next;
-   };
+	List<NodeData> mylist4(mylist2);
+	cout << "mylist4" << mylist4 << endl; 
+	cout << "emptying list 2" << endl;
+	
 
-   Node* head;              // pointer to first node in list
-};
+	//// Many lists of employees, 
+	//// to be sorted alphabetically by last name, then first.
+	//// Vary the data files to test your list code.
+	bool success;
+	Employee* oneEmployee;
+	List<Employee> company1, company2, company3, company4, company5, company6,
+		company7, company8, company9, company10, company11;
+	ifstream infile1("data31.txt"), infile2("data32.txt"),
+		infile3("data33.txt"), infile4("data34.txt");
 
+	company1.buildList(infile1);
+	company2.buildList(infile2);
+	company3.buildList(infile3);
+	company4.buildList(infile4);
 
-//----------------------------------------------------------------------------
-// Constructor 
-template <typename T>
-List<T>::List() {
-   head = NULL;
+	cout << company1 << endl; 
+	cout << company2 << endl; 
+	cout << company3 << endl; 
+	cout << company4 << endl; 
+	company6 = company4;
+	cout << "company 6:" << endl << company6; 
+	company7 = company1;
+	company8 = company2;
+	company10 = company11 = company3;
+
+	//cout << "test == " << endl;
+	//cout << "--------" << endl;
+	//Employee emp1("moose", "bullwinkle");      // last name, first name
+	//Employee emp2("squirrel", "rocky");
+	//// knows emp1 and emp2 are in the lists, so deletes without checking
+	//success = company10.remove(emp1, oneEmployee);  delete oneEmployee;
+	//success = company11.remove(emp2, oneEmployee);  delete oneEmployee;
+	//cout << "Company10:" << endl << company10 << endl;
+	//cout << "Company11:" << endl << company11 << endl;
+	//cout << "company10 " << (company10 == company11 ? "equals" : "does not equal")
+	//	<< " company11" << endl;
+	//success = company11.remove(emp1, oneEmployee);  delete oneEmployee;
+	//cout << "Company11:" << endl << company11 << endl;
+	//cout << "company10 " << (company10 == company11 ? "equals" : "does not equal")
+	//	<< " company11" << endl;
+
+	//cout << "test remove and retrieve on 4" << endl;
+	//cout << "-----------------------------" << endl;
+	//Employee emp3("aaaaa", "aa");
+	//Employee emp4("zzzzz", "zz");
+	//success = company4.retrieve(emp3, oneEmployee);
+	//if (success) cout << "Found in list:  " << *oneEmployee << endl;
+	//else         cout << "Did not find aaaaa in list" << endl;
+	//success = company4.retrieve(emp4, oneEmployee);
+	//if (success) cout << "Found in list:  " << *oneEmployee << endl;
+	//else         cout << "Did not find zzzzz in list" << endl;
+	//Employee emp5("ghost", "casper");
+	//Employee emp6("rella", "barbara");
+	//Employee emp7("bear", "bertha");
+	//success = company4.remove(emp5, oneEmployee);
+	//if (success) {
+	//	cout << "Removed:  " << *oneEmployee << endl;
+	//	delete oneEmployee;                          // could insert elsewhere
+	//}
+	//else
+	//	cout << "Did not find ghost in list" << endl;
+	//success = company4.remove(emp6, oneEmployee);
+	//if (success) {
+	//	cout << "Removed:  " << *oneEmployee << endl;
+	//	delete oneEmployee;
+	//}
+	//else
+	//	cout << "Did not find rella in list" << endl;
+	//success = company4.remove(emp7, oneEmployee);
+	//if (success) {
+	//	cout << "Removed:  " << *oneEmployee << endl;
+	//	delete oneEmployee;
+	//}
+	//else
+	//	cout << "Did not find bear in list" << endl;
+	//cout << "Company4 after removes:" << endl << company4 << endl;
+
+	//testCopyConstructor(company10, company10);
+	//cout << "back in main, Company10:" << endl << company10 << endl;
+	return 0;
 }
-
-//----------------------------------------------------------------------------
-//Destructor
-template <typename T>
-List<T>::~List(){
-	this->makeEmpty(); 
-
-
-}
-
-//----------------------------------------------------------------------------
-// Copy Constructor
-template <typename T>
-List<T>::List(const List& toCopy){
-	if (toCopy.isEmpty() != true){
-		Node * rhsTransverse = toCopy.head; 
-		head = new Node; 
-		Node* lhsTransverse = head; 
-		
-		while (rhsTransverse != NULL){
-			lhsTransverse->data = new T; 
-			*lhsTransverse->data = *rhsTransverse->data; 
-			if (rhsTransverse->next == NULL){ 
-				lhsTransverse->next = NULL; 
-				break; }
-				Node * ptr = new Node;
-				lhsTransverse->next = ptr;
-			
-
-			lhsTransverse = lhsTransverse->next;
-			rhsTransverse = rhsTransverse->next; 
-
-		}
-		
-		
-
-	}
-
-}
-//----------------------------------------------------------------------------
-// make empty
-template <typename T>
-void List<T>:: makeEmpty(){
-	if (head != NULL){
-		Node* current = head;
-
-		while (current != NULL) {
-			Node* next = current->next;
-			delete current->data;
-			delete current;
-			current = next;
-		}
-	}
-}
-//----------------------------------------------------------------------------
-// isEmpty 
-// check to see if List is empty as defined by a NULL head
-template <typename T>
-bool List<T>::isEmpty() const {
-   return head == NULL;
-}
-
-//----------------------------------------------------------------------------
-// insert 
-// insert an item into list; operator< of the T class
-// has the responsibility for the sorting criteria
-template <typename T>
-bool List<T>::insert(T* dataptr) {                    
-
-   Node* ptr= new Node;
-   if (ptr == NULL) return false;                 // out of memory, bail
-   ptr->data = dataptr;                           // link the node to data
-
-   // if the list is empty or if the node should be inserted before 
-   // the first node of the list
-   if (isEmpty() || *ptr->data < *head->data) {
-      ptr->next = head;                           
-      head = ptr;
-   }
-     
-   // then check the rest of the list until we find where it belongs 
-   else {
-      Node* current = head->next;          // to walk list
-      Node* previous = head;               // to walk list, lags behind
-
-      // walk until end of the list or found position to insert
-      while (current != NULL && *current->data < *ptr->data) {
-            previous = current;                  // walk to next node
-            current = current->next;
-      }
-
-      // insert new node, link it in
-      ptr->next = current; 
-      previous->next = ptr; 
-   }
-   return true;
-}
-
-//----------------------------------------------------------------------------
-// buildList 
-// continually insert new items into the list
-template <typename T>
-void List<T>::buildList(ifstream& infile) {
-   T* ptr;
-   bool successfulRead;                            // read good data
-   bool success;                                   // successfully insert
-   for (;;) {
-      ptr = new T;
-      successfulRead = ptr->setData(infile);       // fill the T object
-      if (infile.eof()) {
-         delete ptr;
-         break;
-      }
-
-      // insert good data into the list, otherwise ignore it
-      if (successfulRead) {
-         success = insert(ptr);
-      }
-      else {
-         delete ptr;
-      }
-      if (!success) break;
-   }
-}
-
-#endif
-
