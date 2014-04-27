@@ -30,19 +30,22 @@ class List {
    friend ostream& operator<<(ostream& output, const List<T>& thelist) {
       Node* current = thelist.head;
       while (current != NULL) { 
-         output << *current->data;
+		  
+		  output << *current->data;
          current = current->next;
       }
+	  
       return output;
 }
 
 public:
    List();                               // default constructor
-   // ~List();                           // destructor
-   // List(const List&);                 // copy constructor
+   ~List();                           // destructor
+    List(const List&);                 // copy constructor
    bool insert(T*);                      // insert one Node into list
    bool isEmpty() const;                 // is list empty?
    void buildList(ifstream&);            // build a list from datafile
+   void makeEmpty(); 
 
    // needs many more member functions to become a complete ADT
 
@@ -63,6 +66,59 @@ List<T>::List() {
    head = NULL;
 }
 
+//----------------------------------------------------------------------------
+//Destructor
+template <typename T>
+List<T>::~List(){
+	this->makeEmpty(); 
+
+
+}
+
+//----------------------------------------------------------------------------
+// Copy Constructor
+template <typename T>
+List<T>::List(const List& toCopy){
+	if (toCopy.isEmpty() != true){
+		Node * rhsTransverse = toCopy.head; 
+		head = new Node; 
+		Node* lhsTransverse = head; 
+		
+		while (rhsTransverse != NULL){
+			lhsTransverse->data = new T; 
+			*lhsTransverse->data = *rhsTransverse->data; 
+			if (rhsTransverse->next == NULL){ 
+				lhsTransverse->next = NULL; 
+				break; }
+				Node * ptr = new Node;
+				lhsTransverse->next = ptr;
+			
+
+			lhsTransverse = lhsTransverse->next;
+			rhsTransverse = rhsTransverse->next; 
+
+		}
+		
+		
+
+	}
+
+}
+//----------------------------------------------------------------------------
+// make empty
+template <typename T>
+void List<T>:: makeEmpty(){
+	if (head != NULL){
+		Node* current = head;
+
+		while (current != NULL) {
+			Node* next = current->next;
+			delete current->data;
+			delete current;
+			current = next;
+		}
+	}
+}
 //----------------------------------------------------------------------------
 // isEmpty 
 // check to see if List is empty as defined by a NULL head
