@@ -84,7 +84,9 @@ List<T>::List() {
 //Destructor
 template <typename T>
 List<T>::~List(){
-	this->makeEmpty(); 
+	if (head != NULL){
+		this->makeEmpty();
+	}
 
 
 }
@@ -93,30 +95,32 @@ List<T>::~List(){
 // Copy Constructor
 template <typename T>
 List<T>::List(const List& toCopy){
-	if (toCopy.isEmpty() != true){
-		Node * rhsTransverse = toCopy.head; 
-		head = new Node; 
-		Node* lhsTransverse = head; 
-		
-		while (rhsTransverse != NULL){
-			lhsTransverse->data = new T; 
-			*lhsTransverse->data = *rhsTransverse->data; 
-			if (rhsTransverse->next == NULL){ 
-				lhsTransverse->next = NULL; 
-				break; }
+	if (toCopy.head != head){
+		if (toCopy.isEmpty() != true){
+			Node * rhsTransverse = toCopy.head;
+			head = new Node;
+			Node* lhsTransverse = head;
+
+			while (rhsTransverse != NULL){
+				lhsTransverse->data = new T;
+				*lhsTransverse->data = *rhsTransverse->data;
+				if (rhsTransverse->next == NULL){
+					lhsTransverse->next = NULL;
+					break;
+				}
 				Node * ptr = new Node;
 				lhsTransverse->next = ptr;
-			
 
-			lhsTransverse = lhsTransverse->next;
-			rhsTransverse = rhsTransverse->next; 
+
+				lhsTransverse = lhsTransverse->next;
+				rhsTransverse = rhsTransverse->next;
+
+			}
+
+
 
 		}
-		
-		
-
 	}
-
 }
 //----------------------------------------------------------------------------
 // make empty
@@ -131,6 +135,10 @@ void List<T>:: makeEmpty(){
 			delete current;
 			current = next;
 		}
+		head->data = NULL; 
+		head->next = NULL; 
+		head = NULL; 
+		
 	}
 }
 //----------------------------------------------------------------------------
@@ -207,7 +215,7 @@ void List<T>::buildList(ifstream& infile) {
 // operator=
 template <typename T> 
 List<T>& List<T>::operator=(const List<T>& toCopy){
-	if (toCopy != *this){
+	if (&toCopy != this){
 
 
 		if (toCopy.isEmpty() != true){
