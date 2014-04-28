@@ -63,18 +63,22 @@ int main() {
 	cout << company3 << endl; 
 	cout << company4 << endl; 
 	company6 = company4;
-	cout << "company 6:" << endl << company6; 
 	company7 = company1;
 	company8 = company2;
 	company10 = company11 = company3;
 
-	//cout << "test == " << endl;
-	//cout << "--------" << endl;
-	//Employee emp1("moose", "bullwinkle");      // last name, first name
-	//Employee emp2("squirrel", "rocky");
-	//// knows emp1 and emp2 are in the lists, so deletes without checking
-	//success = company10.remove(emp1, oneEmployee);  delete oneEmployee;
-	//success = company11.remove(emp2, oneEmployee);  delete oneEmployee;
+	cout << "company 10: " << endl << company10 << endl; 
+	cout << "test == " << endl;
+	cout << "--------" << endl;
+	Employee emp1("Bell", "Regan");      // last name, first name
+	Employee emp2("squirrel", "rocky");
+	// knows emp1 and emp2 are in the lists, so deletes without checking
+	success = company10.retrieve(emp1, oneEmployee); 
+	//delete oneEmployee;
+	cout << *oneEmployee << endl; 
+	//cout << company10 << endl; 
+	cout << success << endl; 
+ //   success = company11.remove(emp2, oneEmployee);  delete oneEmployee;
 	//cout << "Company10:" << endl << company10 << endl;
 	//cout << "Company11:" << endl << company11 << endl;
 	//cout << "company10 " << (company10 == company11 ? "equals" : "does not equal")
