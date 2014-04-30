@@ -25,51 +25,51 @@ using namespace std;
 template <typename T>
 class List {
 
-   // output operator for class List, print data, 
-   // responsibility for output is left to object stored in the list
-   friend ostream& operator<<(ostream& output, const List<T>& thelist) {
-      Node* current = thelist.head;
-      while (current != NULL) { 
-		  
-		  output << *current->data;
-         current = current->next;
-      }
-	  
-      return output;
-}
+	// output operator for class List, print data, 
+	// responsibility for output is left to object stored in the list
+	friend ostream& operator<<(ostream& output, const List<T>& thelist) {
+		Node* current = thelist.head;
+		while (current != NULL) {
+
+			output << *current->data;
+			current = current->next;
+		}
+
+		return output;
+	}
 
 public:
-   List();                               // default constructor
-   ~List();								 // destructor
-    List(const List&);                   // copy constructor
-   bool insert(T*);                      // insert one Node into list
-   bool isEmpty() const;                 // is list empty?
-   void buildList(ifstream&);            // build a list from datafile
-   void makeEmpty(); 
-   bool remove(T, T*&); 
-   bool retrieve(T, T*&);
-   void merge(List&, List&); 
-   
+	List();                               // default constructor
+	~List();								 // destructor
+	List(const List&);                   // copy constructor
+	bool insert(T*);                      // insert one Node into list
+	bool isEmpty() const;                 // is list empty?
+	void buildList(ifstream&);            // build a list from datafile
+	void makeEmpty();
+	bool remove(T, T*&);
+	bool retrieve(T, T*&);
+	void merge(List&, List&);
+	void intersect(const List&, const List&); 
 
 
-   // needs many more member functions to become a complete ADT
+	// needs many more member functions to become a complete ADT
 
-   //operators
+	//operators
 
-   List& operator=(const List &); 
-   
-   //boolean operators
-   bool operator==(const List&) const;
-   bool operator!=(const List&) const; 
+	List& operator=(const List &);
+
+	//boolean operators
+	bool operator==(const List&) const;
+	bool operator!=(const List&) const;
 
 
 private:
-   struct Node {            // the node in a linked list
-      T* data;              // pointer to actual data, operations in T
-      Node* next;
-   };
+	struct Node {            // the node in a linked list
+		T* data;              // pointer to actual data, operations in T
+		Node* next;
+	};
 
-   Node* head;              // pointer to first node in list
+	Node* head;              // pointer to first node in list
 };
 
 
@@ -77,14 +77,14 @@ private:
 // Constructor 
 template <typename T>
 List<T>::List() {
-   head = NULL;
+	head = NULL;
 }
 
 //----------------------------------------------------------------------------
 //Destructor
 template <typename T>
 List<T>::~List(){
-		this->makeEmpty();
+	this->makeEmpty();
 
 }
 
@@ -92,44 +92,44 @@ List<T>::~List(){
 // Copy Constructor
 template <typename T>
 List<T>::List(const List& toCopy){
-		if (toCopy.isEmpty() != true){
-			Node * rhsTransverse = toCopy.head;
-			head = new Node;
-			Node* lhsTransverse = head;
+	if (toCopy.isEmpty() != true){
+		Node * rhsTransverse = toCopy.head;
+		head = new Node;
+		Node* lhsTransverse = head;
 
-			while (rhsTransverse != NULL){
-				lhsTransverse->data = new T;
-				*lhsTransverse->data = *rhsTransverse->data;
-				if (rhsTransverse->next == NULL){
-					lhsTransverse->next = NULL;
-					break;
-				}
-				Node * ptr = new Node;
-				lhsTransverse->next = ptr;
-
-
-				lhsTransverse = lhsTransverse->next;
-				rhsTransverse = rhsTransverse->next;
-
+		while (rhsTransverse != NULL){
+			lhsTransverse->data = new T;
+			*lhsTransverse->data = *rhsTransverse->data;
+			if (rhsTransverse->next == NULL){
+				lhsTransverse->next = NULL;
+				break;
 			}
+			Node * ptr = new Node;
+			lhsTransverse->next = ptr;
 
 
+			lhsTransverse = lhsTransverse->next;
+			rhsTransverse = rhsTransverse->next;
 
 		}
-	
+
+
+
+	}
+
 }
 //----------------------------------------------------------------------------
 // make empty
 template <typename T>
-void List<T>:: makeEmpty(){
+void List<T>::makeEmpty(){
 	if (head != NULL){
 		Node* current = head;
-		
+
 
 		while (current != NULL) {
 			Node* next = current->next;
 			delete current->data;
-			current->data = NULL; 
+			current->data = NULL;
 			delete current;
 			//current = NULL; 
 
@@ -137,8 +137,8 @@ void List<T>:: makeEmpty(){
 		}
 		//head->data = NULL; //problems are in this 
 		//head->next = NULL; 
-		head = NULL; 
-		
+		head = NULL;
+
 	}
 }
 //----------------------------------------------------------------------------
@@ -146,7 +146,7 @@ void List<T>:: makeEmpty(){
 // check to see if List is empty as defined by a NULL head
 template <typename T>
 bool List<T>::isEmpty() const {
-   return head == NULL;
+	return head == NULL;
 }
 
 //----------------------------------------------------------------------------
@@ -154,35 +154,35 @@ bool List<T>::isEmpty() const {
 // insert an item into list; operator< of the T class
 // has the responsibility for the sorting criteria
 template <typename T>
-bool List<T>::insert(T* dataptr) {                    
+bool List<T>::insert(T* dataptr) {
 
-   Node* ptr= new Node;
-   if (ptr == NULL) return false;                 // out of memory, bail
-   ptr->data = dataptr;                           // link the node to data
+	Node* ptr = new Node;
+	if (ptr == NULL) return false;                 // out of memory, bail
+	ptr->data = dataptr;                           // link the node to data
 
-   // if the list is empty or if the node should be inserted before 
-   // the first node of the list
-   if (isEmpty() || *ptr->data < *head->data) {
-      ptr->next = head;                           
-      head = ptr;
-   }
-     
-   // then check the rest of the list until we find where it belongs 
-   else {
-      Node* current = head->next;          // to walk list
-      Node* previous = head;               // to walk list, lags behind
+	// if the list is empty or if the node should be inserted before 
+	// the first node of the list
+	if (isEmpty() || *ptr->data < *head->data) {
+		ptr->next = head;
+		head = ptr;
+	}
 
-      // walk until end of the list or found position to insert
-      while (current != NULL && *current->data < *ptr->data) {
-            previous = current;                  // walk to next node
-            current = current->next;
-      }
+	// then check the rest of the list until we find where it belongs 
+	else {
+		Node* current = head->next;          // to walk list
+		Node* previous = head;               // to walk list, lags behind
 
-      // insert new node, link it in
-      ptr->next = current; 
-      previous->next = ptr; 
-   }
-   return true;
+		// walk until end of the list or found position to insert
+		while (current != NULL && *current->data < *ptr->data) {
+			previous = current;                  // walk to next node
+			current = current->next;
+		}
+
+		// insert new node, link it in
+		ptr->next = current;
+		previous->next = ptr;
+	}
+	return true;
 }
 
 //----------------------------------------------------------------------------
@@ -190,30 +190,30 @@ bool List<T>::insert(T* dataptr) {
 // continually insert new items into the list
 template <typename T>
 void List<T>::buildList(ifstream& infile) {
-   T* ptr;
-   bool successfulRead;                            // read good data
-   bool success;                                   // successfully insert
-   for (;;) {
-      ptr = new T;
-      successfulRead = ptr->setData(infile);       // fill the T object
-      if (infile.eof()) {
-         delete ptr;
-         break;
-      }
+	T* ptr;
+	bool successfulRead;                            // read good data
+	bool success;                                   // successfully insert
+	for (;;) {
+		ptr = new T;
+		successfulRead = ptr->setData(infile);       // fill the T object
+		if (infile.eof()) {
+			delete ptr;
+			break;
+		}
 
-      // insert good data into the list, otherwise ignore it
-      if (successfulRead) {
-         success = insert(ptr);
-      }
-      else {
-         delete ptr;
-      }
-      if (!success) break;
-   }
+		// insert good data into the list, otherwise ignore it
+		if (successfulRead) {
+			success = insert(ptr);
+		}
+		else {
+			delete ptr;
+		}
+		if (!success) break;
+	}
 }
 //----------------------------------------------------------------------------
 // operator=
-template <typename T> 
+template <typename T>
 List<T>& List<T>::operator=(const List<T>& toCopy){
 	if (&toCopy != this){
 
@@ -244,64 +244,64 @@ List<T>& List<T>::operator=(const List<T>& toCopy){
 
 		}
 	}
-	return *this; 
+	return *this;
 }
 //----------------------------------------------------------------------------
 // operator ==
-template <typename T> 
+template <typename T>
 bool List<T>::operator==(const List& rhs) const{
-	Node * rhsIterator = rhs.head; 
-	Node * lhsIterator = head; 
+	Node * rhsIterator = rhs.head;
+	Node * lhsIterator = head;
 	while (rhsIterator != NULL){
 		if (*rhsIterator->data != *lhsIterator->data){
 			return false;
 		}
-		rhsIterator = rhsIterator->next; 
-		lhsIterator = lhsIterator->next; 
+		rhsIterator = rhsIterator->next;
+		lhsIterator = lhsIterator->next;
 	}
-	return true; 
+	return true;
 }
 //----------------------------------------------------------------------------
 // opearator !=
 template <typename T>
 bool List<T>::operator!=(const List& rhs) const{
-	return *this == rhs ? false : true; 
+	return *this == rhs ? false : true;
 
 }
 
 //----------------------------------------------------------------------------
 // remove
-template <typename T> 
+template <typename T>
 bool List<T>::remove(T toFind, T*& found){
-	Node * previous = head; 
-	Node * next = head->next; 
+	Node * previous = head;
+	Node * next = head->next;
 	if (*head->data == toFind){
-		found = head->data; 
+		found = head->data;
 		if (head->next != NULL){
 			head = head->next;
 		}
-		/*delete head->data; 
-		delete head; 
+		/*delete head->data;
+		delete head;
 		head = NULL; */
-		return true; 
+		return true;
 	}
-	while(next != NULL){
+	while (next != NULL){
 		if (*next->data == toFind){
-			found = next->data; 
-			previous->next = next->next; 
+			found = next->data;
+			previous->next = next->next;
 			/*delete next->data;
-			delete next; 
+			delete next;
 			next = NULL; */
-			return true; 
+			return true;
 
 		}
 
-		previous = next; 
-		next = next->next; 
+		previous = next;
+		next = next->next;
 
 	}
-	found = NULL; 
-	return false; 
+	found = NULL;
+	return false;
 
 }
 
@@ -309,31 +309,31 @@ bool List<T>::remove(T toFind, T*& found){
 // retrieve
 template <typename T>
 bool List<T>::retrieve(T toFind, T*& found){
-	Node * current = head; 
-	
+	Node * current = head;
+
 	while (current != NULL){
 		if (*current->data == toFind){
 			found = current->data;
 			return true;
 		}
-		current = current->next; 
+		current = current->next;
 	}
-	return false; 
+	return false;
 }
 //----------------------------------------------------------------------------
 // merge
-template <typename T> 
+template <typename T>
 void List<T>::merge(List& lhs, List& rhs){
 	if (this != &lhs && this != &rhs){
 		this->makeEmpty();
 	}
-	
-	
-		Node * tempHead = new Node;
-		Node * tempHeadInsert = tempHead; 
-		Node * lhsTransverse = lhs.head;
-		Node * rhsTransverse = rhs.head;
-	
+
+
+	Node * tempHead = new Node;
+	Node * tempHeadInsert = tempHead;
+	Node * lhsTransverse = lhs.head;
+	Node * rhsTransverse = rhs.head;
+
 
 	while (lhsTransverse != NULL || rhsTransverse != NULL){
 		if (lhsTransverse != NULL && rhsTransverse != NULL){
@@ -356,8 +356,8 @@ void List<T>::merge(List& lhs, List& rhs){
 			}
 		}
 		else if (lhsTransverse == NULL){
-			tempHead->next = rhsTransverse; 
-			rhsTransverse = rhsTransverse->next; 
+			tempHead->next = rhsTransverse;
+			rhsTransverse = rhsTransverse->next;
 			tempHead = tempHead->next;
 
 		}
@@ -372,13 +372,57 @@ void List<T>::merge(List& lhs, List& rhs){
 	lhs.head = NULL;
 	rhs.head = NULL;
 	head = tempHeadInsert->next;
-	delete tempHeadInsert; 
+	delete tempHeadInsert;
 
-	
-	
 
+
+
+
+
+}
+//----------------------------------------------------------------------------
+//intersect
+template <typename T>
+void List<T>::intersect(const List& lhs, const List& rhs){
+
+	if (this != &lhs || this != &rhs){
+		this->makeEmpty(); 
+	}
+
+	Node * intersectList = NULL; 
+	Node * tempHead = NULL; 
+	Node * lhsIterator = lhs.head;
+	Node * rhsIterator = rhs.head; 
+	bool first = false; 
+
+	while (lhsIterator != NULL && rhsIterator != NULL){
+		if (*lhsIterator->data == *rhsIterator->data){
+			
+			intersectList = new Node;
+			if (first == false){
+				tempHead = intersectList;
+				first = true;
+			}
+			intersectList->data = new T;
+			*intersectList->data = *lhsIterator->data;
+			intersectList->next = NULL;
+			intersectList = intersectList->next;
+			
+			
+			
+		}
+		if (*lhsIterator->data < *rhsIterator->data){
+			lhsIterator = lhsIterator->next; 
+		}
+		else{
+			rhsIterator = rhsIterator->next; 
+
+		}
+	}
 	
+	head = tempHead; 
+
+
 
 }
 #endif
-
