@@ -84,10 +84,7 @@ List<T>::List() {
 //Destructor
 template <typename T>
 List<T>::~List(){
-	if (head != NULL){
 		this->makeEmpty();
-	}
-
 
 }
 
@@ -95,7 +92,6 @@ List<T>::~List(){
 // Copy Constructor
 template <typename T>
 List<T>::List(const List& toCopy){
-	if (toCopy.head != head){
 		if (toCopy.isEmpty() != true){
 			Node * rhsTransverse = toCopy.head;
 			head = new Node;
@@ -120,7 +116,7 @@ List<T>::List(const List& toCopy){
 
 
 		}
-	}
+	
 }
 //----------------------------------------------------------------------------
 // make empty
@@ -128,15 +124,19 @@ template <typename T>
 void List<T>:: makeEmpty(){
 	if (head != NULL){
 		Node* current = head;
+		
 
 		while (current != NULL) {
 			Node* next = current->next;
 			delete current->data;
+			current->data = NULL; 
 			delete current;
+			//current = NULL; 
+
 			current = next;
 		}
-		head->data = NULL; 
-		head->next = NULL; 
+		//head->data = NULL; //problems are in this 
+		//head->next = NULL; 
 		head = NULL; 
 		
 	}
@@ -280,12 +280,18 @@ bool List<T>::remove(T toFind, T*& found){
 		if (head->next != NULL){
 			head = head->next;
 		}
+		/*delete head->data; 
+		delete head; 
+		head = NULL; */
 		return true; 
 	}
 	while(next != NULL){
 		if (*next->data == toFind){
 			found = next->data; 
 			previous->next = next->next; 
+			/*delete next->data;
+			delete next; 
+			next = NULL; */
 			return true; 
 
 		}
@@ -300,7 +306,7 @@ bool List<T>::remove(T toFind, T*& found){
 }
 
 //----------------------------------------------------------------------------
-// remove
+// retrieve
 template <typename T>
 bool List<T>::retrieve(T toFind, T*& found){
 	Node * current = head; 
@@ -313,6 +319,22 @@ bool List<T>::retrieve(T toFind, T*& found){
 		current = current->next; 
 	}
 	return false; 
+}
+//----------------------------------------------------------------------------
+// merge
+template <typename T> 
+void List<T>::merge(List& lhs, List& rhs){
+	this->makeEmpty(); 
+	Node * rhsTransverse = rhs.head; 
+	Node * lhsTransverse = lhs.head; 
+	Node * newTransverse = head; 
+	
+	newTransverse = new Node; 
+	newTransverse->data = new T;
+	newTransverse->data = *rhsTransverse->data < *lhsTransverse->data ? rhsTransverse->data : lhsTransverse->data;
+
+	
+
 }
 #endif
 
