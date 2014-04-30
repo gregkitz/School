@@ -324,17 +324,15 @@ bool List<T>::retrieve(T toFind, T*& found){
 // merge
 template <typename T> 
 void List<T>::merge(List& lhs, List& rhs){
-	///if (*this != lhs || *this != rhs){
+	if (this != &lhs && this != &rhs){
 		this->makeEmpty();
-	//}
+	}
 	
 	
 		Node * tempHead = new Node;
-		
 		Node * tempHeadInsert = tempHead; 
-	
-	Node * lhsTransverse = lhs.head;
-	Node * rhsTransverse = rhs.head;
+		Node * lhsTransverse = lhs.head;
+		Node * rhsTransverse = rhs.head;
 	
 
 	while (lhsTransverse != NULL || rhsTransverse != NULL){
@@ -371,12 +369,13 @@ void List<T>::merge(List& lhs, List& rhs){
 		}
 
 	}
+	lhs.head = NULL;
+	rhs.head = NULL;
 	head = tempHeadInsert->next;
 	delete tempHeadInsert; 
 
 	
-	lhs.head = NULL; 
-	rhs.head = NULL; 
+	
 
 	
 
