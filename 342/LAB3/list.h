@@ -1,5 +1,21 @@
-/////////////////////////  listtemplate.h file  //////////////////////////////
-// Simple linked list, uses Node as linked list node
+// Greg Kitzmiller
+// Zander 342
+// Spring 14
+// This templated class creates an ordered linked list. This class has 
+// member functions which will allow the merging of two sorted lists 
+// of the same type, finding the intersection of two sorted lists
+// and standard linked list members (build, insert, isEmpty). 
+// Additionally, this class has the functionality of passing a data
+// item to the list for either removal from the list or retrieval, 
+// where both of these member functions will return with a bool 
+// value for if the data item was in the list. 
+// Assumptions:  
+//   -- Control of <, printing, etc. of T information is in the T class.  
+//   -- There is no dummy head node, head points to first node.  
+//      If the list is empty, head is NULL.
+//   -- The insert allocates memory for a Node, ptr to the data is passed in.
+//      Allocating memory and setting data is the responsibility of the caller.
+//----------------------------------------------------------------------------
 
 #ifndef LIST_H
 #define LIST_H
@@ -8,19 +24,6 @@
 #include <fstream>
 using namespace std;
 
-//--------------------------  class List  ------------------------------------
-// ADT List: finite, ordered collection of zero or more items.
-//           The ordering is determined by operator< of T class.
-//          
-// Assumptions:  
-//   -- Control of <, printing, etc. of T information is in the T class.  
-//   -- There is no dummy head node, head points to first node.  
-//      If the list is empty, head is NULL.
-//   -- The insert allocates memory for a Node, ptr to the data is passed in.
-//      Allocating memory and setting data is the responsibility of the caller.
-//
-// Note this definition is not a complete class and is not fully documented.
-//----------------------------------------------------------------------------
 
 template <typename T>
 class List {
@@ -329,55 +332,89 @@ void List<T>::merge(List& lhs, List& rhs){
 	}
 
 
-	Node * tempHead = new Node;
-	Node * tempHeadInsert = tempHead;
+	Node * iterator = NULL;
+	Node * iteratorInsert = NULL;
 	Node * lhsTransverse = lhs.head;
 	Node * rhsTransverse = rhs.head;
+	bool first = true; 
 
 
 	while (lhsTransverse != NULL || rhsTransverse != NULL){
 		if (lhsTransverse != NULL && rhsTransverse != NULL){
 			if (*lhsTransverse->data < *rhsTransverse->data){
-				tempHead->next = lhsTransverse;
-				lhsTransverse = lhsTransverse->next;
-				tempHead = tempHead->next;
+				if (first){
+					iterator = lhsTransverse; 
+					iteratorInsert = iterator; 
+					lhsTransverse = lhsTransverse->next; 
+					first = false; 
+				}
+				else{
+					iterator->next = lhsTransverse;
+					lhsTransverse = lhsTransverse->next;
+					iterator = iterator->next;
+				}
+			
 
 			}
 			else if (*lhsTransverse->data > *rhsTransverse->data){
-				tempHead->next = rhsTransverse;
-				rhsTransverse = rhsTransverse->next;
-				tempHead = tempHead->next;
+				if (first){
+					iterator = lhsTransverse;
+					iteratorInsert = iterator;
+					lhsTransverse = lhsTransverse->next;
+					first = false;
+				}
+				else{
+					iterator->next = rhsTransverse;
+					rhsTransverse = rhsTransverse->next;
+					iterator = iterator->next;
+				}
 			}
 			else {
-				tempHead->next = lhsTransverse;
-				lhsTransverse = lhsTransverse->next;
-				tempHead = tempHead->next;
-
+				if (first){
+					iterator = lhsTransverse;
+					iteratorInsert = iterator;
+					lhsTransverse = lhsTransverse->next;
+					first = false;
+				}
+				else{
+					iterator->next = lhsTransverse;
+					lhsTransverse = lhsTransverse->next;
+					iterator = iterator->next;
+				}
 			}
 		}
-		else if (lhsTransverse == NULL){
-			tempHead->next = rhsTransverse;
-			rhsTransverse = rhsTransverse->next;
-			tempHead = tempHead->next;
-
+		else if (lhsTransverse == NULL && rhsTransverse != NULL){
+			if (first){
+				iterator = rhsTransverse;
+				rhsTransverse = rhsTransverse->next; 
+				iteratorInsert = iterator;
+				first = false;
+			}
+			else{
+				iterator->next = rhsTransverse;
+				rhsTransverse = rhsTransverse->next;
+				iterator = iterator->next;
+			}
 		}
 		else{
-			tempHead->next = lhsTransverse;
-			lhsTransverse = lhsTransverse->next;
-			tempHead = tempHead->next;
-
+			if (first){
+				iterator = lhsTransverse;
+				iteratorInsert = iterator;
+				lhsTransverse = lhsTransverse->next;
+				first = false;
+			}
+			else{
+				iterator->next = lhsTransverse;
+				lhsTransverse = lhsTransverse->next;
+				iterator = iterator->next;
+			}
 		}
 
 	}
 	lhs.head = NULL;
 	rhs.head = NULL;
-	head = tempHeadInsert->next;
-	delete tempHeadInsert;
-
-
-
-
-
+	head = iteratorInsert;
+	
 
 }
 //----------------------------------------------------------------------------
@@ -416,7 +453,9 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 	}
 	
 	intersectList->next = NULL; 
-	head = tempHead; 
+	head = tempHead->next; 
+	delete tempHead->data; 
+	delete tempHead; 
 
 
 
