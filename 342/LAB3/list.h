@@ -42,21 +42,18 @@ class List {
 	}
 
 public:
-	List();                               // default constructor
-	~List();								 // destructor
-	List(const List&);                   // copy constructor
-	bool insert(T*);                      // insert one Node into list
-	bool isEmpty() const;                 // is list empty?
-	void buildList(ifstream&);            // build a list from datafile
-	void makeEmpty();
-	bool remove(T, T*&);
-	bool retrieve(T, T*&);
-	void merge(List&, List&);
-	void intersect(const List&, const List&); 
-
-
-	// needs many more member functions to become a complete ADT
-
+	List();                             // default constructor
+	~List();							// destructor
+	List(const List&);                  // copy constructor
+	bool insert(T*);                    // insert one Node into list
+	bool isEmpty() const;               // is list empty?
+	void buildList(ifstream&);          // build a list from datafile
+	void makeEmpty();					// empties out a list
+	bool remove(T, T*&);				// find a node in a list and remove it
+	bool retrieve(T, T*&);				// find a node in the list 
+	void merge(List&, List&);			// merges two sorted lists
+	void intersect(const List&, const List&); //finds alike nodes
+	
 	//operators
 
 	List& operator=(const List &);
@@ -84,7 +81,9 @@ List<T>::List() {
 }
 
 //----------------------------------------------------------------------------
-//Destructor
+// Destructor
+// Preconditions: A list object is declared in memory 
+// Iterates through a list and clears the data and node memory
 template <typename T>
 List<T>::~List(){
 	this->makeEmpty();
@@ -93,6 +92,9 @@ List<T>::~List(){
 
 //----------------------------------------------------------------------------
 // Copy Constructor
+// Parameter list must be an object of type List
+// function iterates through the parameter list and creates a new list
+// using the same data members
 template <typename T>
 List<T>::List(const List& toCopy){
 	if (toCopy.isEmpty() != true){
@@ -123,23 +125,20 @@ List<T>::List(const List& toCopy){
 }
 //----------------------------------------------------------------------------
 // make empty
+// Empties out a list by looping through it and deleting the data 
+// and node objects. 
 template <typename T>
 void List<T>::makeEmpty(){
 	if (head != NULL){
 		Node* current = head;
-
-
-		while (current != NULL) {
+			while (current != NULL) {    //exits at the null item at the end
 			Node* next = current->next;
 			delete current->data;
 			current->data = NULL;
 			delete current;
-			//current = NULL; 
-
 			current = next;
 		}
-		//head->data = NULL; //problems are in this 
-		//head->next = NULL; 
+		
 		head = NULL;
 
 	}
@@ -216,6 +215,9 @@ void List<T>::buildList(ifstream& infile) {
 }
 //----------------------------------------------------------------------------
 // operator=
+// Assigns the righthand object to the lefthand object
+// Tests for self-assignment and doesn't run if it is a  self-assignment. 
+// Empties out the current list then makes a deep copy
 template <typename T>
 List<T>& List<T>::operator=(const List<T>& toCopy){
 	if (&toCopy != this){
@@ -227,17 +229,15 @@ List<T>& List<T>::operator=(const List<T>& toCopy){
 			head = new Node;
 			Node* lhsTransverse = head;
 
-			while (rhsTransverse != NULL){
+			while (rhsTransverse != NULL){ // while the right list isn't empty
 				lhsTransverse->data = new T;
-				*lhsTransverse->data = *rhsTransverse->data;
+				*lhsTransverse->data = *rhsTransverse->data; //memberwise-copy
 				if (rhsTransverse->next == NULL){
 					lhsTransverse->next = NULL;
-					break;
+					break; //ends the inserting and caps off new list
 				}
 				Node * ptr = new Node;
 				lhsTransverse->next = ptr;
-
-
 				lhsTransverse = lhsTransverse->next;
 				rhsTransverse = rhsTransverse->next;
 
@@ -247,16 +247,19 @@ List<T>& List<T>::operator=(const List<T>& toCopy){
 
 		}
 	}
-	return *this;
+	return *this; //returns the address of the newly copied list
 }
 //----------------------------------------------------------------------------
 // operator ==
+// Boolean comparison for if the lists are equal. 
+// Loops through both lists and returns false if a mismatch is find, 
+// otherwise, returns true. 
 template <typename T>
 bool List<T>::operator==(const List& rhs) const{
 	Node * rhsIterator = rhs.head;
 	Node * lhsIterator = head;
 	while (rhsIterator != NULL){
-		if (*rhsIterator->data != *lhsIterator->data){
+		if (*rhsIterator->data != *lhsIterator->data){ //tests for mismatch
 			return false;
 		}
 		rhsIterator = rhsIterator->next;
@@ -266,6 +269,7 @@ bool List<T>::operator==(const List& rhs) const{
 }
 //----------------------------------------------------------------------------
 // opearator !=
+// Reuses the code from == and returns the opposite. 
 template <typename T>
 bool List<T>::operator!=(const List& rhs) const{
 	return *this == rhs ? false : true;
@@ -274,42 +278,43 @@ bool List<T>::operator!=(const List& rhs) const{
 
 //----------------------------------------------------------------------------
 // remove
+// returns boolean value for whether the wanted item is in the list
+// checks the head first. Otherwise, steps through and returns true if 
+// found, otherwise false. 
+
 template <typename T>
 bool List<T>::remove(T toFind, T*& found){
-	Node * previous = head;
 	Node * next = head->next;
 	if (*head->data == toFind){
 		found = head->data;
 		if (head->next != NULL){
 			head = head->next;
 		}
-		/*delete head->data;
-		delete head;
-		head = NULL; */
-		return true;
+		
+		return true; //if the data is the head, return true
 	}
-	while (next != NULL){
+	while (next != NULL){ //otherwise, step through looking for it
 		if (*next->data == toFind){
 			found = next->data;
-			previous->next = next->next;
-			/*delete next->data;
-			delete next;
-			next = NULL; */
 			return true;
 
 		}
 
-		previous = next;
+		
 		next = next->next;
 
 	}
-	found = NULL;
-	return false;
+	found = NULL;  //if it's not in the list null out the second parameter
+	return false; 
 
 }
 
 //----------------------------------------------------------------------------
 // retrieve
+// steps through a list looking for the desired value
+// if it's found it sets the found pointer to point to the object
+// and returns a boolean value of true
+// otherwise, returns a boolean value of false
 template <typename T>
 bool List<T>::retrieve(T toFind, T*& found){
 	Node * current = head;
@@ -325,9 +330,16 @@ bool List<T>::retrieve(T toFind, T*& found){
 }
 //----------------------------------------------------------------------------
 // merge
+// Takes two sorted lists and merges them into one, then clears out the 
+// two sorted lists unless one of them is itself. 
+// The method of doing this is comparing the lists from left to right and 
+// inserting the smaller, or arbirarily the left if they're equal and 
+// continuing to insert the smaller of the two. 
+
+
 template <typename T>
 void List<T>::merge(List& lhs, List& rhs){
-	if (this != &lhs && this != &rhs){
+	if (this != &lhs && this != &rhs){ //only make empty if neither are this 
 		this->makeEmpty();
 	}
 
@@ -338,9 +350,10 @@ void List<T>::merge(List& lhs, List& rhs){
 	Node * rhsTransverse = rhs.head;
 	bool first = true; 
 
-
+	//keep merging while either are not null
 	while (lhsTransverse != NULL || rhsTransverse != NULL){
-		if (lhsTransverse != NULL && rhsTransverse != NULL){
+		if (lhsTransverse != NULL && rhsTransverse != NULL){ //if they're both
+															// not null
 			if (*lhsTransverse->data < *rhsTransverse->data){
 				if (first){
 					iterator = lhsTransverse; 
@@ -356,6 +369,7 @@ void List<T>::merge(List& lhs, List& rhs){
 			
 
 			}
+			//if the righthand list is smaller 
 			else if (*lhsTransverse->data > *rhsTransverse->data){
 				if (first){
 					iterator = lhsTransverse;
@@ -383,6 +397,7 @@ void List<T>::merge(List& lhs, List& rhs){
 				}
 			}
 		}
+		//if only the left hand list is null
 		else if (lhsTransverse == NULL && rhsTransverse != NULL){
 			if (first){
 				iterator = rhsTransverse;
@@ -396,6 +411,7 @@ void List<T>::merge(List& lhs, List& rhs){
 				iterator = iterator->next;
 			}
 		}
+		// otherwise, if only the righthand list is null
 		else{
 			if (first){
 				iterator = lhsTransverse;
@@ -419,11 +435,16 @@ void List<T>::merge(List& lhs, List& rhs){
 }
 //----------------------------------------------------------------------------
 //intersect
+//creates a new list of the the current list which has the common elements
+//between the two parameter lists. 
+// Algorithm is comparing the lists from left to right and iterating 
+// what comes out smaller of the two comparisons or if they're equal
+// arbitrarily iterating one of the the lists. 
 template <typename T>
 void List<T>::intersect(const List& lhs, const List& rhs){
 
-	if (this != &lhs || this != &rhs){
-		this->makeEmpty(); 
+	if (this != &lhs && this != &rhs){ //only make empty if *this list
+		this->makeEmpty();			   //is not involved
 	}
 
 	Node * intersectList = new Node; 
@@ -432,7 +453,7 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 	Node * lhsIterator = lhs.head;
 	Node * rhsIterator = rhs.head; 
 	bool first = false; 
-
+	//if one of them is empty then there can't be an intersect
 	while (lhsIterator != NULL && rhsIterator != NULL){
 		if (*lhsIterator->data == *rhsIterator->data){
 			
@@ -443,6 +464,7 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 			
 			
 		}
+		//increment the smaller of the two lists
 		if (*lhsIterator->data < *rhsIterator->data){
 			lhsIterator = lhsIterator->next; 
 		}
