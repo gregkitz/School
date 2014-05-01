@@ -389,8 +389,9 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 		this->makeEmpty(); 
 	}
 
-	Node * intersectList = NULL; 
-	Node * tempHead = NULL; 
+	Node * intersectList = new Node; 
+	intersectList->data = new T; 
+	Node * tempHead = intersectList; 
 	Node * lhsIterator = lhs.head;
 	Node * rhsIterator = rhs.head; 
 	bool first = false; 
@@ -398,16 +399,10 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 	while (lhsIterator != NULL && rhsIterator != NULL){
 		if (*lhsIterator->data == *rhsIterator->data){
 			
-			intersectList = new Node;
-			if (first == false){
-				tempHead = intersectList;
-				first = true;
-			}
+			intersectList->next = new Node;
+			intersectList = intersectList->next;
 			intersectList->data = new T;
 			*intersectList->data = *lhsIterator->data;
-			intersectList->next = NULL;
-			intersectList = intersectList->next;
-			
 			
 			
 		}
@@ -420,6 +415,7 @@ void List<T>::intersect(const List& lhs, const List& rhs){
 		}
 	}
 	
+	intersectList->next = NULL; 
 	head = tempHead; 
 
 
