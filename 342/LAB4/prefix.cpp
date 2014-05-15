@@ -40,8 +40,7 @@ int Prefix::evaluatePrefix() const {
 
 int Prefix::evaluatePrefixHelper(int& index) const {
     char symbol = expr[++index];
-	
-    //base case 
+	 //base case 
 	if (isdigit(symbol)){
 		return symbol - '0'; 
 	}
@@ -78,33 +77,13 @@ void Prefix::outputAsPostfix(ostream& out) const {
 
 void Prefix::toPostfix(int& index, char postfix[], int& count) const {
 	char symbol = expr[++index];
-	
 	//base case
 	if (isdigit(symbol)){
 		postfix[++count] = symbol; 
 	}
-
-	
-	else if (symbol == '+'){
+	else{
 		toPostfix(index, postfix, count); 
-		toPostfix(index, postfix, count);
-		postfix[++count] = symbol;
-		
-	}
-	else if (symbol == '-'){
-		toPostfix(index, postfix, count);
-		toPostfix(index, postfix, count);
-		postfix[++count] = symbol;
-
-	}
-	else if (symbol == '*'){
-		toPostfix(index, postfix, count);
-		toPostfix(index, postfix, count);
-		postfix[++count] = symbol;
-	}
-	else if (symbol == '/'){
-		toPostfix(index, postfix, count);
-		toPostfix(index, postfix, count);
+		toPostfix(index, postfix, count);	
 		postfix[++count] = symbol;
 	}
 
