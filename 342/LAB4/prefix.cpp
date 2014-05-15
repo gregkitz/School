@@ -1,9 +1,12 @@
+//-----------------------------------------------------------------------------
+// CSS 342, Spring 2014
+// Lab 4
+// Greg Kitzmiller
+//-----------------------------------------------------------------------------
 
-// You add all other appropriate comments.
-
-// While I have done much of this for you, make sure you understand it all.
-// Make sure you understand why the parameters are pass by reference
-// in evaluatePrefixHelper and toPostfix.
+// ADT which holds a prefix expression. Expression stored in an arry. 
+// Contains an array for converting to a postfix expression. 
+// Can evaluate the prefix expression. Assumed to be a correctly formatted. 
 
 #include "prefix.h"
 
@@ -37,7 +40,13 @@ int Prefix::evaluatePrefix() const {
     int index = -1;                               // to walk through expr
     return evaluatePrefixHelper(index);
 }
-
+//-----------------------------------------------------------------------------
+// Recursive helper function. Evaluates a prefix expression. This function 
+// reads a symbol and determines if it's a digit or not. If it's a digit it'll
+// return otherwise it'll recursively call that symbol used as an operator
+// on the next lefthand and righthand operands. 
+// Index is passed by reference since it's used out of the scope of any one
+// use of this function. 
 int Prefix::evaluatePrefixHelper(int& index) const {
     char symbol = expr[++index];
 	 //base case 
@@ -74,7 +83,11 @@ void Prefix::outputAsPostfix(ostream& out) const {
     postfix[++count] = '\0';
     out << postfix;
 }
-
+//-----------------------------------------------------------------------------
+// Recursive function which converts a given prefix expression to postfix. 
+// Reads, if it's an operator writes in the needed operations then lists the
+// operator which will reverse the expression. 
+// Base case is if the expression is a digit. 
 void Prefix::toPostfix(int& index, char postfix[], int& count) const {
 	char symbol = expr[++index];
 	//base case
