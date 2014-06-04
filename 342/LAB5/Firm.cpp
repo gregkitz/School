@@ -3,7 +3,7 @@
 #include <iostream> 
 #include <fstream>
 #include <string> 
-const string clientList = "lab4data.txt"; 
+//const string clientList = "lab4data.txt"; 
 
 firm::firm(){
 	ifstream inFile("lab5data.txt"); 
@@ -26,12 +26,14 @@ bool firm::addClients(ifstream& clientFile){
 	string firstName; 
 	while (true){
 		clientFile >> lastName >> firstName; 
+		cout << lastName << firstName << endl; 
 		ClientInfo * newClientInfo = new ClientInfo(lastName, firstName);
 
 		if (clientFile.eof()) break;
 
 
 	}
+	return true; 
 	//insert client object into tree
 
 }

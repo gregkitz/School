@@ -9,8 +9,8 @@ using namespace std;
 
 class BSTree {
 public:
-	BSTree();
-	~BSTree(); // calls makeEmpty which deallocates all memory 
+	/*BSTree();
+	~BSTree();*/ // calls makeEmpty which deallocates all memory 
 	// insert object into the tree, parameter holds pointer to object to insert 
 	bool insert(Client*);
 	// retrieve object, first parameter is object to retrieve 

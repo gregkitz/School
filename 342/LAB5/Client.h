@@ -10,11 +10,12 @@ public:
 	Client(); 
 	Client(ifstream& inFile); 
 	bool operator<(const Client&) const;
+	static const int MAX_ACCOUNT = 10;
 private: 
 	int clientID; 
 	ClientInfo info; 
-	const int MAX_ACCOUNT = 10;
-	Account accounts[];
+	
+	Account accounts[MAX_ACCOUNT];
 	
 	 
 	
