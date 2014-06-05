@@ -5,9 +5,7 @@ Client::Client(const int& idNumber){
 }
 
 Client::~Client(){
-	delete[] accounts;
 	
-
 }
 
 void Client::displayID(){

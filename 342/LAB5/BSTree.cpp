@@ -3,6 +3,12 @@ BSTree::BSTree(){
 	root = NULL; 
 }
 
+BSTree::~BSTree(){
+
+	delete root; 
+	root = NULL; 
+}
+
 bool BSTree::insert(Client* dataptr) {
 	TreeNode* ptr = new TreeNode;
 	if (ptr == NULL) return false;            // out of memory

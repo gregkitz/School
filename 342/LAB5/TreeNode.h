@@ -6,7 +6,9 @@
 
 using namespace std; 
 class TreeNode {
-public: TreeNode(); 
+public: 
+	TreeNode(); 
+	~TreeNode(); 
 	Client * client; 
 	TreeNode * left; 
 	TreeNode * right; 

@@ -3,14 +3,28 @@
 #include <iostream> 
 #include <fstream>
 #include <string> 
-//const string clientList = "lab4data.txt"; 
+const string clientList = "lab5data.txt"; 
+const string transactionsList = "lab5command.txt"; 
 static const int MAX_ACCOUNT = 10; 
 firm::firm(){
-	ifstream inFile("lab5data.txt"); 
+	ifstream inFile(clientList); 
 	if (!inFile)  {
 		cout << "File could not be opened." << endl;
 		}
-	addClients(inFile); 
+	else{
+		addClients(inFile);
+	}
+	ifstream inFileCommands(transactionsList);
+	if (!inFileCommands) {
+		cout << "File could not be opened." << endl; 
+	}
+	else{
+		addTransactions(inFileCommands);
+	}
+
+}
+
+firm::~firm(){
 
 }
 
@@ -43,7 +57,7 @@ bool firm::addClients(ifstream& clientFile){
 		newClient->setAccounts(balances); 
 		//insert client object into tree
 
-
+		totalClients++; 
 		clients.insert(newClient); 
 		
 		//delete newClient;
@@ -51,8 +65,80 @@ bool firm::addClients(ifstream& clientFile){
 
 
 	}
-	clients.display(); 
+	
 	return true; 
 
 
+}
+
+
+bool firm::addTransactions(ifstream& transactionsFile){
+
+	if (!transactionsFile)  {
+		cout << "File could not be opened." << endl;
+	}
+	char type; 
+	int accountNumber; 
+	int to, from, amount; 
+	//declare new transaction object 
+	Transaction newTransaction;
+	while (true){
+
+		//read in first char (type of transaction) 
+		transactionsFile >> type; 
+		//enter 4-part if statement 
+		if (type == 'm' || type == 'M'){
+			transactionsFile >> from >> amount >> to; 
+			//validate from, amount, and to (use separate validation functions)
+			
+
+
+
+			//end validation 
+			newTransaction.setType('M');
+			newTransaction.setFromAccount(from / 10); 
+			newTransaction.setFromAccountType(from % 10);
+			newTransaction.setAmount(amount); 
+			newTransaction.setToAccount(to / 10); 
+			newTransaction.setToAccountType(to % 10); 
+			transactions.push(newTransaction); 
+		}
+		else if (type == 'd' || type == 'D'){
+			transactionsFile >> to >> amount; 
+			//validate to and amount (use separate validation functions)
+
+			//end validate
+			newTransaction.setType('D');
+			newTransaction.setToAccountType(to % 10); 
+			newTransaction.setToAccount(to / 10); 
+			newTransaction.setAmount(amount); 
+			transactions.push(newTransaction); 
+			
+			
+		}
+		else if (type == 'w' || type == 'W'){
+			newTransaction.setType('W');
+			transactionsFile >> from >> amount; 
+			//validate from and amount 
+
+			//end validate
+			newTransaction.setFromAccountType(from % 10); 
+			newTransaction.setFromAccount(from / 10); 
+			newTransaction.setAmount(amount); 
+			transactions.push(newTransaction); 
+		}
+		else if (type == 'h' || type == 'H'){
+			newTransaction.setType('H');
+			transactionsFile >> from; 
+			newTransaction.setFromAccount(from); 
+		}
+		else{
+			//error reading in transaction type
+		}
+		//if m, read in next 3 lines, insert into transaction file
+		
+		if (transactionsFile.eof()) break;
+
+	}
+	return true; 
 }
