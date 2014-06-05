@@ -8,8 +8,10 @@ class Account{
 public: 
 	int getBalance(); 
 	Account();
+	void setNumBalance(int num, int bal); 
+	void setType(int typeOfAccount); 
 	void getInitialBalance(); 
-	void setBalance(int toSet); 
+	void setIniBalance(int toSet); 
 	void deposit(); 
 	void withdraw(); 
 

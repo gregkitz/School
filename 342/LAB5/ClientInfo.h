@@ -8,6 +8,7 @@ class ClientInfo {
 private: 
 	string lastName, firstName; 
 public: 
+	ClientInfo(); 
 	ClientInfo(string last, string first); 
 
 };

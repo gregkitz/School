@@ -8,9 +8,13 @@ using namespace std;
 class Client {
 public: 
 	Client(); 
+	~Client(); 
 	Client(ifstream& inFile); 
+	Client(const int& idNumber); 
 	bool operator<(const Client&) const;
 	static const int MAX_ACCOUNT = 10;
+	void setClientInfo(const ClientInfo& toSet); 
+	void setAccounts(Account toSet[]); 
 private: 
 	int clientID; 
 	ClientInfo info; 

@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string> 
 //const string clientList = "lab4data.txt"; 
-
+static const int MAX_ACCOUNT = 10; 
 firm::firm(){
 	ifstream inFile("lab5data.txt"); 
 	if (!inFile)  {
@@ -24,11 +24,25 @@ bool firm::addClients(ifstream& clientFile){
 	}
 	string lastName; 
 	string firstName; 
+	int idNum; 
 	while (true){
-		clientFile >> lastName >> firstName; 
-		cout << lastName << firstName << endl; 
-		ClientInfo * newClientInfo = new ClientInfo(lastName, firstName);
-
+		clientFile >> lastName >> firstName >> idNum; 
+		cout << idNum << endl; 
+		ClientInfo newClientInfo(lastName, firstName); 
+		Client * newClient = new Client(idNum); 
+		newClient->setClientInfo(newClientInfo); 
+		
+		//create array of accounts then pass into client 
+		Account balances[MAX_ACCOUNT]; 
+		for (int i = 0; i < MAX_ACCOUNT; i++){
+			int newBalance = 0; 
+			clientFile >> newBalance; 
+			balances[i].setIniBalance(newBalance);  // set balance
+			balances[i].setType(i);
+			}
+		// pass new array to client 
+		newClient->setAccounts(balances); 
+		delete newClient;
 		if (clientFile.eof()) break;
 
 
