@@ -27,7 +27,6 @@ bool firm::addClients(ifstream& clientFile){
 	int idNum; 
 	while (true){
 		clientFile >> lastName >> firstName >> idNum; 
-		cout << idNum << endl; 
 		ClientInfo newClientInfo(lastName, firstName); 
 		Client * newClient = new Client(idNum); 
 		newClient->setClientInfo(newClientInfo); 
@@ -35,19 +34,24 @@ bool firm::addClients(ifstream& clientFile){
 		//create array of accounts then pass into client 
 		Account balances[MAX_ACCOUNT]; 
 		for (int i = 0; i < MAX_ACCOUNT; i++){
-			int newBalance = 0; 
-			clientFile >> newBalance; 
+			int newBalance = 0;
+			clientFile >> newBalance;
 			balances[i].setIniBalance(newBalance);  // set balance
 			balances[i].setType(i);
-			}
+		}
 		// pass new array to client 
 		newClient->setAccounts(balances); 
-		delete newClient;
+		//insert client object into tree
+
+
+		clients.insert(newClient); 
+		
+		//delete newClient;
 		if (clientFile.eof()) break;
 
 
 	}
 	return true; 
-	//insert client object into tree
+
 
 }

@@ -1,4 +1,7 @@
 #include "BSTree.h"
+BSTree::BSTree(){
+	root = NULL; 
+}
 
 bool BSTree::insert(Client* dataptr) {
 	TreeNode* ptr = new TreeNode;
@@ -36,6 +39,7 @@ bool BSTree::insert(Client* dataptr) {
 	return true;
 }
 
-bool BSTree::isEmpty() const{
-	return root == NULL ? true : false; 
+bool BSTree::isEmpty() {
+	bool izEmpty = (root == NULL);
+	return (root == NULL) ? true : false; 
 }

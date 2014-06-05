@@ -7,7 +7,7 @@ using namespace std;
 
 int main(){
 	firm theFirm; 
-	
+	cout << "sweet" << endl; 
 	return 0; 
 }
 
