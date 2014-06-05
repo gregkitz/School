@@ -3,6 +3,8 @@
 #include <iostream> 
 #include <fstream>
 #include <string> 
+#include <math.h>
+#include <ctype.h>
 const string clientList = "lab5data.txt"; 
 const string transactionsList = "lab5command.txt"; 
 static const int MAX_ACCOUNT = 10; 
@@ -132,13 +134,46 @@ bool firm::addTransactions(ifstream& transactionsFile){
 			transactionsFile >> from; 
 			newTransaction.setFromAccount(from); 
 		}
-		else{
+		else if(isalpha(type)){
 			//error reading in transaction type
+			cout << "'" << type << "'" << "is an invalid entry for transaction type." << endl; 
 		}
-		//if m, read in next 3 lines, insert into transaction file
+		else {
+			
+		}
+		
 		
 		if (transactionsFile.eof()) break;
 
 	}
 	return true; 
+}
+
+bool firm::validateFrom(int from){
+	//make sure from is four digits long
+	if (from != 0){
+		if ((floor(log10(abs(from))) + 1) == 4){
+			return true; 
+		}
+	}
+	else return false; 
+}
+bool firm::validateTo(int to){
+	//make sure from is four digits long
+	if (to != 0){
+		if ((floor(log10(abs(to))) + 1) == 4){
+			return true;
+		}
+	}
+	else return false; 
+}
+
+bool firm::validateType(int type){
+	//make sure type is one digit long
+	if (type != 0 && isdigit(type)){
+		if ((floor(log10(abs(type))) + 1) == 1){
+			return true;
+		}
+	}
+	else return false; 
 }

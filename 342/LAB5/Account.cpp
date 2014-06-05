@@ -19,3 +19,10 @@ void Account::setType(int typeOfAccount){
 	type = typeOfAccount; 
 
 }
+
+void Account::setName(string nameToSet){
+	name = nameToSet;
+}
+string Account::getName(){
+	return name;
+}

@@ -21,6 +21,10 @@ public:
 	firm();
 	~firm(); 
 
+	bool validateFrom(int from); 
+	bool validateTo(int to); 
+	bool validateType(int type); 
+
 };
 #endif 
 

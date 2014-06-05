@@ -1,6 +1,6 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
-
+#include <string> 
 #include <iostream>
 
 using namespace std;
@@ -14,8 +14,11 @@ public:
 	void setIniBalance(int toSet); 
 	void deposit(); 
 	void withdraw(); 
+	void setName(string nameToSet); 
+	string getName();
 
 private: 
+	string name; 
 	int type; 
 	int balance; 
 	int initialBalance; 
