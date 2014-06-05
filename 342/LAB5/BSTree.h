@@ -16,12 +16,13 @@ public:
 	// retrieve object, first parameter is object to retrieve 
 	// second parameter holds pointer to found object, NULL if not found 
 	bool retrieve(const Client&, Client*&)const;
-	void display()const; //displays the contents of a tree to cout 
+	void display(); //displays the contents of a tree to cout 
 	void makeEmpty(); //empties the current tree, deallocates all memory 
 	bool isEmpty(); //returns true if tree is empty 
 	
 private:
 	TreeNode * root; 
+	void displayHelper(const TreeNode& node);
 
 	
 };

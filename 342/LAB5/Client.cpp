@@ -10,6 +10,11 @@ Client::~Client(){
 
 }
 
+void Client::displayID(){
+	cout << clientID << endl; 
+
+}
+
 void Client::setClientInfo( const ClientInfo& toSet){
 	info = toSet; 
 

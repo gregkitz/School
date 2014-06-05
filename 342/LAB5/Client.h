@@ -15,6 +15,7 @@ public:
 	static const int MAX_ACCOUNT = 10;
 	void setClientInfo(const ClientInfo& toSet); 
 	void setAccounts(Account toSet[]); 
+	void displayID();
 private: 
 	int clientID; 
 	ClientInfo info; 

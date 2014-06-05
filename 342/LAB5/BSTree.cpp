@@ -39,6 +39,24 @@ bool BSTree::insert(Client* dataptr) {
 	return true;
 }
 
+void BSTree::display(){
+	if (root != NULL){
+		displayHelper(*root); 
+	}
+
+}
+
+void BSTree::displayHelper(const TreeNode& node){
+	node.client->displayID(); 
+	if (node.left != NULL){
+		displayHelper(*node.left);
+	}
+	
+	if (node.right != NULL){
+		displayHelper(*node.right);
+	}
+
+}
 bool BSTree::isEmpty() {
 	bool izEmpty = (root == NULL);
 	return (root == NULL) ? true : false; 

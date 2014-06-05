@@ -51,6 +51,7 @@ bool firm::addClients(ifstream& clientFile){
 
 
 	}
+	clients.display(); 
 	return true; 
 
 
