@@ -22,7 +22,8 @@ public:
 	
 private:
 	TreeNode * root; 
-	void displayHelper(const TreeNode& node);
+	void displayHelper(const TreeNode&);
+	bool retrieveHelper(const TreeNode*, const Client&, Client*&) const;
 
 	
 };

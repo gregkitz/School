@@ -67,3 +67,39 @@ bool BSTree::isEmpty() {
 	bool izEmpty = (root == NULL);
 	return (root == NULL) ? true : false; 
 }
+bool BSTree::retrieve(const Client& toFind, Client*& found) const{
+	found = NULL; 
+	if (root != NULL){
+		if (*root->client == toFind){
+			found = root->client;
+			return true;
+		}
+		else if (toFind < *root->client){
+			return retrieveHelper(root->left, toFind, found);
+		}
+		else {
+			return retrieveHelper(root->right, toFind, found);
+		}
+	}
+	else{
+		return false; 
+	}
+
+}
+
+bool BSTree::retrieveHelper(const TreeNode* currentNode, const Client& toFind, Client*& found) const{
+	if (currentNode == NULL){
+		return false; 
+	}
+	else if (*currentNode->client == toFind){
+		found = currentNode->client; 
+		return true; 
+	}
+	else if (toFind < *currentNode->client){
+		return retrieveHelper(currentNode->left, toFind, found);
+	}
+	else {
+		return retrieveHelper(currentNode->right, toFind, found);
+	}
+	
+}

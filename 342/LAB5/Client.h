@@ -6,12 +6,17 @@
 #include "Account.h"
 using namespace std;
 class Client {
+	friend ostream& operator<<(ostream &, const Client &);
 public: 
 	Client(); 
 	~Client(); 
 	Client(ifstream& inFile); 
 	Client(const int& idNumber); 
 	bool operator<(const Client&) const;
+	bool operator<=(const Client&) const;
+	bool operator>=(const Client&) const;
+	bool operator>(const Client&) const;
+	bool operator==(const Client&) const; 
 	static const int MAX_ACCOUNT = 10;
 	void setClientInfo(const ClientInfo& toSet); 
 	void setAccounts(Account toSet[]); 

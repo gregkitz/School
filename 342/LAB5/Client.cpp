@@ -37,3 +37,27 @@ void Client::setAccounts(Account toSet[]){
 bool Client::operator<(const Client& right) const{
 	return clientID < right.clientID ? true : false; 
 }
+
+bool Client::operator<=(const Client& right) const{
+	return clientID <= right.clientID ? true : false; 
+}
+bool Client::operator>=(const Client& right) const{
+	return clientID >= right.clientID ? true : false; 
+}
+bool Client::operator>(const Client& right) const{
+	return clientID > right.clientID ? true : false; 
+}
+
+bool Client::operator==(const Client& lhs) const{
+	if (clientID == lhs.clientID){
+		return true; 
+	}
+	else{
+		return false; 
+	}
+}
+
+ostream& operator<<(ostream & output, const Client & client){
+		output << client.clientID << endl;
+		return output; 
+}

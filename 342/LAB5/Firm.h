@@ -11,8 +11,9 @@ class firm {
 private: 
 	BSTree clients; 
 	queue<Transaction> transactions; 
-	int totalClients = 0; 
-	
+	int totalClients; 
+	static const string clientList;
+	static const string transactionsList;
 	
 public: 
 	bool addClients(ifstream& clientFile);
@@ -24,6 +25,8 @@ public:
 	bool validateFrom(int from); 
 	bool validateTo(int to); 
 	bool validateType(int type); 
+
+	void processTransactions(); 
 
 };
 #endif 

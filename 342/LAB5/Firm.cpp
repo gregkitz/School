@@ -4,26 +4,27 @@
 #include <fstream>
 #include <string> 
 #include <math.h>
+#include <cmath>
 #include <ctype.h>
-const string clientList = "lab5data.txt"; 
-const string transactionsList = "lab5command.txt"; 
+static const string clientList = "lab5data.txt";
+static const string transactionsList = "lab5command.txt";
 static const int MAX_ACCOUNT = 10; 
 firm::firm(){
-	ifstream inFile(clientList); 
+	ifstream inFile("lab5data.txt"); 
 	if (!inFile)  {
 		cout << "File could not be opened." << endl;
 		}
 	else{
 		addClients(inFile);
 	}
-	ifstream inFileCommands(transactionsList);
+	ifstream inFileCommands("lab5command.txt");
 	if (!inFileCommands) {
 		cout << "File could not be opened." << endl; 
 	}
 	else{
 		addTransactions(inFileCommands);
 	}
-
+	processTransactions(); 
 }
 
 firm::~firm(){
@@ -91,48 +92,61 @@ bool firm::addTransactions(ifstream& transactionsFile){
 		//enter 4-part if statement 
 		if (type == 'm' || type == 'M'){
 			transactionsFile >> from >> amount >> to; 
-			//validate from, amount, and to (use separate validation functions)
-			
-
-
-
+			//validate from, and to (use separate validation functions)
+			if (validateFrom(from / 10) && validateTo(to / 10)){
 			//end validation 
-			newTransaction.setType('M');
-			newTransaction.setFromAccount(from / 10); 
-			newTransaction.setFromAccountType(from % 10);
-			newTransaction.setAmount(amount); 
-			newTransaction.setToAccount(to / 10); 
-			newTransaction.setToAccountType(to % 10); 
-			transactions.push(newTransaction); 
+				newTransaction.setType('M');
+				newTransaction.setFromAccount(from / 10);
+				newTransaction.setFromAccountType(from % 10);
+				newTransaction.setAmount(amount);
+				newTransaction.setToAccount(to / 10);
+				newTransaction.setToAccountType(to % 10);
+				transactions.push(newTransaction);
+			}
+			else{
+				cout << "Invalid from or to account number: " << to << from << endl; 
+			}
 		}
 		else if (type == 'd' || type == 'D'){
 			transactionsFile >> to >> amount; 
 			//validate to and amount (use separate validation functions)
-
-			//end validate
-			newTransaction.setType('D');
-			newTransaction.setToAccountType(to % 10); 
-			newTransaction.setToAccount(to / 10); 
-			newTransaction.setAmount(amount); 
-			transactions.push(newTransaction); 
-			
+			if (validateTo(to / 10)){
+				//end validate
+				newTransaction.setType('D');
+				newTransaction.setToAccountType(to % 10);
+				newTransaction.setToAccount(to / 10);
+				newTransaction.setAmount(amount);
+				transactions.push(newTransaction);
+			}
+			else{
+				cout << "Invalid to account number: " << to << endl;
+			}
 			
 		}
 		else if (type == 'w' || type == 'W'){
 			newTransaction.setType('W');
 			transactionsFile >> from >> amount; 
 			//validate from and amount 
-
-			//end validate
-			newTransaction.setFromAccountType(from % 10); 
-			newTransaction.setFromAccount(from / 10); 
-			newTransaction.setAmount(amount); 
-			transactions.push(newTransaction); 
+			if (validateFrom(from / 10) && validateTo(to / 10)){
+				//end validate
+				newTransaction.setFromAccountType(from % 10);
+				newTransaction.setFromAccount(from / 10);
+				newTransaction.setAmount(amount);
+				transactions.push(newTransaction);
+			}
+			else{
+				cout << "Invalid from account number: " << from << endl;
+			}
 		}
 		else if (type == 'h' || type == 'H'){
 			newTransaction.setType('H');
 			transactionsFile >> from; 
-			newTransaction.setFromAccount(from); 
+			if (validateFrom(from)){
+				newTransaction.setFromAccount(from);
+			}
+			else{
+				cout << "Invalid from account number: " << from << endl;
+			}
 		}
 		else if(isalpha(type)){
 			//error reading in transaction type
@@ -147,6 +161,21 @@ bool firm::addTransactions(ifstream& transactionsFile){
 
 	}
 	return true; 
+}
+
+void firm::processTransactions(){
+	/*while (!transactions.empty()){
+		transactions.front();
+
+	}*/
+
+	Client john(11113); 
+	Client * foundJohn;
+	bool what; 
+	bool test = true; 
+	clients.display(); 
+	what = clients.retrieve(john, foundJohn);
+	cout << *foundJohn << what << endl; 
 }
 
 bool firm::validateFrom(int from){
